@@ -2,4 +2,18 @@
     <string name="app_name">EasyWeathy</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="location_setting">Location</string>
+    <string name="gps">GPS</string>
+    <string name="map">Map</string>
+    <string name="location_sett">Location</string>
+    <string name="english">English</string>
+    <string name="arabic">Arabic</string>
+    <string name="language_sett">Language</string>
+    <string name="m_s">Meter/Sec</string>
+    <string name="mile_h">Mile/Hour</string>
+    <string name="wind_speed">Wind Speed</string>
+    <string name="celesius">Celsius</string>
+    <string name="fahrenheit">Fahrenheit</string>
+    <string name="kelvin">Kelvin</string>
+    <string name="temp">Temperature</string>
 </resources>

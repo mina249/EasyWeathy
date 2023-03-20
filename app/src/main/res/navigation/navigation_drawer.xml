@@ -7,22 +7,22 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.easyweathy.HomeFragment"
+        android:name="com.example.easyweathy.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.example.easyweathy.SettingFragment"
+        android:name="com.example.easyweathy.settings.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" />
     <fragment
         android:id="@+id/alertFragment"
-        android:name="com.example.easyweathy.AlertFragment"
+        android:name="com.example.easyweathy.alert.AlertFragment"
         android:label="fragment_alarm"
         tools:layout="@layout/fragment_alarm" />
     <fragment
         android:id="@+id/favouriteFragment"
-        android:name="com.example.easyweathy.FavouriteFragment"
+        android:name="com.example.easyweathy.favourite.FavouriteFragment"
         android:label="fragment_favourite"
         tools:layout="@layout/fragment_favourite" />
 </navigation>

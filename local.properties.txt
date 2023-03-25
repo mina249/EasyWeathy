@@ -1,0 +1,1 @@
+sdk.dir=D:\MobileNative\Android\EasyWeathy\EasyWeathy\local.properties

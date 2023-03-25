@@ -16,4 +16,11 @@
     <string name="fahrenheit">Fahrenheit</string>
     <string name="kelvin">Kelvin</string>
     <string name="temp">Temperature</string>
+    <string name="wind">Wind</string>
+    <string name="pressure">Pressure</string>
+    <string name="humidity">Humidity</string>
+    <string name="cloud">Cloud</string>
+    <string name="visibility">Visiblity</string>
+    <string name="ultra">Ultra</string>
+    <string name="search_for_location">Search For Location</string>
 </resources>

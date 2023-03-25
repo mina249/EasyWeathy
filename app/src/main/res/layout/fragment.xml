@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".home.view.DailyFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/daily_card">
+
+        <TextView
+            android:id="@+id/tv_today"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="50dp"
+            android:text="today"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_day_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="50dp"
+            android:text="Wednesday"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_today" />
+
+        <TextView
+            android:id="@+id/tv_day_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="50dp"
+            android:scrollbarSize="20sp"
+            android:text="Thursday"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_day_1" />
+
+        <TextView
+            android:id="@+id/tv_day_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="50dp"
+            android:text="Friday"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_day_2" />
+
+        <TextView
+            android:id="@+id/tv_day_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="50dp"
+            android:text="Saturday"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_day_3" />
+
+        <TextView
+            android:id="@+id/tv_day_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="50dp"
+            android:text="Sunday"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_day_4" />
+
+        <TextView
+            android:id="@+id/tv_day_6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="50dp"
+            android:text="Monday"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_day_5" />
+
+        <TextView
+            android:id="@+id/tv_day_7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="50dp"
+            android:text="Tuesday"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_day_6" />
+
+        <ImageView
+            android:id="@+id/img_today"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="120dp"
+            android:layout_marginTop="36dp"
+            android:layout_marginEnd="30dp"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toStartOf="@+id/tv_des_today"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/sun" />
+
+        <ImageView
+            android:id="@+id/img_day_1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="120dp"
+            android:layout_marginTop="35dp"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_today"
+            tools:src="@drawable/sun" />
+
+        <ImageView
+            android:id="@+id/img_day_2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="120dp"
+            android:layout_marginTop="38dp"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_day_1"
+            tools:src="@drawable/sun" />
+
+        <ImageView
+            android:id="@+id/img_day_3"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="120dp"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_day_2"
+            tools:src="@drawable/sun" />
+
+        <ImageView
+            android:id="@+id/img_day_4"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="120dp"
+            android:layout_marginTop="35dp"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_day_3"
+            tools:src="@drawable/sun" />
+
+        <ImageView
+            android:id="@+id/img_day_5"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="120dp"
+            android:layout_marginTop="35dp"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_day_4"
+            tools:src="@drawable/sun" />
+
+        <ImageView
+            android:id="@+id/img_day_6"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="120dp"
+            android:layout_marginTop="35dp"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_day_5"
+            tools:src="@drawable/sun" />
+
+        <ImageView
+            android:id="@+id/img_day_7"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="120dp"
+            android:layout_marginTop="35dp"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_day_6"
+            tools:src="@drawable/sun" />
+
+        <TextView
+            android:id="@+id/tv_des_today"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="110dp"
+            android:text="broken clouds"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold|italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/img_today"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_des_day1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="130dp"
+            android:text="clear sky"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold|italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/img_day_1"
+            app:layout_constraintTop_toBottomOf="@+id/tv_des_today" />
+
+        <TextView
+            android:id="@+id/tv_des_day2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="110dp"
+            android:text="light rain"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold|italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/img_day_2"
+            app:layout_constraintTop_toBottomOf="@+id/tv_des_day1" />
+
+        <TextView
+            android:id="@+id/tv_des_day3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="110dp"
+            android:text="broken clouds"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold|italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/img_day_3"
+            app:layout_constraintTop_toBottomOf="@+id/tv_des_day2" />
+
+        <TextView
+            android:id="@+id/tv_des_day4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="110dp"
+            android:text="clear sky"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold|italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/img_day_4"
+            app:layout_constraintTop_toBottomOf="@+id/tv_des_day3" />
+
+        <TextView
+            android:id="@+id/tv_des_day5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="110dp"
+            android:text="Clear sky"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold|italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/img_day_5"
+            app:layout_constraintTop_toBottomOf="@+id/tv_des_day4" />
+
+        <TextView
+            android:id="@+id/tv_des_day6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="55dp"
+            android:layout_marginEnd="110dp"
+            android:text="broken clouds"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold|italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/img_day_6"
+            app:layout_constraintTop_toBottomOf="@+id/tv_des_day5" />
+
+        <TextView
+            android:id="@+id/tv_des_day7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="110dp"
+            android:text="light rain"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold|italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/img_day_7"
+            app:layout_constraintTop_toBottomOf="@+id/tv_des_day6" />
+
+        <TextView
+            android:id="@+id/tv_min_today"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="20dp"
+            android:text="9 / 20 °C"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_min_day1"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="20dp"
+            android:text="9 / 20 °C"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_min_today" />
+
+        <TextView
+            android:id="@+id/tv_min_day2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="20dp"
+            android:text="9 / 20 °C"
+            android:textColor="@color/white"
+
+            android:textSize="17sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_min_day1" />
+
+        <TextView
+            android:id="@+id/tv_min_day3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="20dp"
+            android:text="9 / 20 °C"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_min_day2" />
+
+        <TextView
+            android:id="@+id/tv_min_day4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="20dp"
+            android:text="9 / 20 °C"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_min_day3" />
+
+        <TextView
+            android:id="@+id/tv_min_day5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="20dp"
+            android:text="9 / 20 °C"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_min_day4" />
+
+        <TextView
+            android:id="@+id/tv_min_day6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="20dp"
+            android:text="9 / 20 °C"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_min_day5" />
+
+        <TextView
+            android:id="@+id/tv_min_day7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="20dp"
+            android:text="9 / 20 °C"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_min_day6" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

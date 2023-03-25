@@ -14,7 +14,7 @@ class SplashActivity : AppCompatActivity() {
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.lottieSplash.animate().translationX(1400f).setDuration(1000).startDelay = 3000
+        binding.splashCard.animate().translationX(1400f).setDuration(1000).startDelay = 3000
         Handler().postDelayed({
             startActivity(Intent(this,MainActivity::class.java))
             finish()

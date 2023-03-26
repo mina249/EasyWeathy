@@ -26,9 +26,6 @@ class MainActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        var dialog = ChooseLocationDialogueFragment()
-        dialog.show(supportFragmentManager,"dialogue")
         navController = findNavController(R.id.fragment)
         drawerLayout = findViewById(R.id.drawer_layout)
         appConfiguration = AppBarConfiguration(navController.graph, drawerLayout)

@@ -23,4 +23,5 @@
     <string name="visibility">Visiblity</string>
     <string name="ultra">Ultra</string>
     <string name="search_for_location">Search For Location</string>
+    <string name="location_prefrence">location</string>
 </resources>

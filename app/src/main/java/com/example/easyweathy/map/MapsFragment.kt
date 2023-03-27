@@ -1,5 +1,6 @@
 package com.example.easyweathy.map
 
+import android.content.Context
 import android.location.Address
 import android.location.Geocoder
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.navigation.Navigation
 import com.example.easyweathy.R
 import com.example.easyweathy.databinding.FragmentMapsBinding
 
@@ -60,6 +62,14 @@ class MapsFragment : Fragment(){
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+        binding.fabDone.setOnClickListener() {
+            activity?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)?.edit()?.apply {
+                putString("location", "MapDone")
+                apply()
+
+            }
+            Navigation.findNavController(view).navigate(R.id.map_to_home)
+        }
     }
     fun mapSearch(){
 
@@ -77,6 +87,7 @@ class MapsFragment : Fragment(){
                 binding.etSearchMap.hint = "Please Enter Valid Location"
                 false
             }
+
         }
     }
 

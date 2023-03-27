@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.Navigation
 import com.example.easyweathy.databinding.FragmentChooseLocationDialogueBinding
 import com.example.easyweathy.splash.SplashActivity
 
@@ -39,6 +40,7 @@ class ChooseLocationDialogueFragment : DialogFragment() {
                     activity?.getSharedPreferences("appPrefrence", MODE_PRIVATE)?.edit()?.apply {
                         putString("location", "Map")
                         apply()
+
                     }
             } else {
                     activity?.getSharedPreferences("appPrefrence", MODE_PRIVATE)?.edit()?.apply {

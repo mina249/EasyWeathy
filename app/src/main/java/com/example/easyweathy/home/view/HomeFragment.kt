@@ -61,11 +61,11 @@ class HomeFragment : Fragment() {
     @SuppressLint("SimpleDateFormat")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       /* var shared = activity?.getSharedPreferences("appPrefrence",MODE_PRIVATE)
+        var shared = activity?.getSharedPreferences("appPrefrence",MODE_PRIVATE)
         var location = shared?.getString("location","GPS")
         if (location.equals("Map")) {
             Navigation.findNavController(view).navigate(R.id.home_to_map)
-        }*/
+        }
 
         tab.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {

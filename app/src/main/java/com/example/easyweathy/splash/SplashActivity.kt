@@ -17,10 +17,10 @@ class SplashActivity : AppCompatActivity() {
 
         binding.splashCard.animate().translationX(1400f).setDuration(1000).startDelay = 3000
         Handler().postDelayed({
-            var dialog = ChooseLocationDialogueFragment()
+           var dialog = ChooseLocationDialogueFragment()
            dialog.show(supportFragmentManager,"initial dialogue")
-           //startActivity(Intent(this,MainActivity::class.java))
-          // finish()
+          // startActivity(Intent(this,MainActivity::class.java))
+          //finish()
         }, 4000)
     }
 

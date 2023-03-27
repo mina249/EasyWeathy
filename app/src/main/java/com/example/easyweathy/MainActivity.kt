@@ -35,6 +35,8 @@ class MainActivity : AppCompatActivity(){
         actionBar?.setHomeAsUpIndicator(R.drawable.baseline_menu)
         actionBar?.setDisplayShowHomeEnabled(true)
         actionBar?.setDisplayHomeAsUpEnabled(true)
+      //  var dialog = ChooseLocationDialogueFragment()
+       // dialog.show(supportFragmentManager,"initial dialogue")
 
         
     }

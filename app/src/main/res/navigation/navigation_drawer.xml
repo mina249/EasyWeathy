@@ -37,5 +37,20 @@
         android:id="@+id/mapsFragment"
         android:name="com.example.easyweathy.map.MapsFragment"
         android:label="fragment_maps"
-        tools:layout="@layout/fragment_maps" />
+        tools:layout="@layout/fragment_maps" >
+        <action
+            android:id="@+id/map_to_home"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/chooseLocationDialogueFragment"
+        android:name="com.example.easyweathy.ChooseLocationDialogueFragment"
+        android:label="ChooseLocationDialogueFragment" >
+        <action
+            android:id="@+id/dialogue_to_map"
+            app:destination="@id/mapsFragment" />
+        <action
+            android:id="@+id/dialogue_to_home"
+            app:destination="@id/homeFragment" />
+    </dialog>
 </navigation>

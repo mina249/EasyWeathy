@@ -13,9 +13,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavViewModelStoreProvider
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import com.example.easyweathy.R
+import com.example.easyweathy.database.ConcreteLocalSource
 import com.example.easyweathy.databinding.FragmentMapsBinding
+import com.example.easyweathy.favourite.view_model.FavouriteViewModel
+import com.example.easyweathy.favourite.view_model.FavouriteViewModelFactory
+import com.example.easyweathy.home.view.viewmodel.WeatherViewModel
+import com.example.easyweathy.home.view.viewmodel.WeatherViewModelFactory
+import com.example.easyweathy.model.ConcreteRepo
+import com.example.easyweathy.model.WeatherResponse
+import com.example.easyweathy.network.ConcreteRemoteSource
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -23,26 +35,34 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.io.IOException
 
 class MapsFragment : Fragment(){
         lateinit var map: GoogleMap
-        lateinit var location:LatLng
         lateinit var binding:FragmentMapsBinding
+        lateinit var favViewModel: FavouriteViewModel
+        lateinit var favFactory:FavouriteViewModelFactory
+          var latitude:Double = 0.0
+        var longtiude:Double = 0.0
+        val args :MapsFragmentArgs by navArgs()
+    lateinit var weatherResponse:WeatherResponse
    private val callback = OnMapReadyCallback { googleMap ->
 
         val sydney = LatLng(-34.0, 151.0)
         googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
        map = googleMap
-       googleMap.clear()
        mapSearch()
+
 
        googleMap.setOnMapClickListener {
            googleMap.clear()
            googleMap.addMarker(MarkerOptions().position(it).title("my location"))
-           Toast.makeText(requireContext(),"map pressed",Toast.LENGTH_SHORT)
-           Log.i("jesus",it.latitude.toString())
+           latitude = it.latitude
+           longtiude = it.longitude
 
        }
 
@@ -63,12 +83,30 @@ class MapsFragment : Fragment(){
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
         binding.fabDone.setOnClickListener() {
-            activity?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)?.edit()?.apply {
-                putString("location", "MapDone")
-                apply()
 
+            if(args.home == "Home") {
+                activity?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)?.edit()?.apply {
+                    putString("location", "MapDone")
+                    apply()
+
+                }
+                activity?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)?.edit()?.apply {
+                    putFloat("lat", latitude.toFloat())
+                    putFloat("long", longtiude.toFloat())
+                    apply()
+                    Navigation.findNavController(view).navigate(R.id.map_to_home)
+
+                }
+            }else{
+                favFactory = FavouriteViewModelFactory(
+                    ConcreteRepo.getInstance(ConcreteRemoteSource,ConcreteLocalSource.getInstance(requireContext())))
+
+                favViewModel = ViewModelProvider(requireActivity(), favFactory).get(FavouriteViewModel::class.java)
+
+                favViewModel.insertFavouriteWeather(latitude,longtiude)
+
+                Navigation.findNavController(view).navigate(R.id.map_to_favourite)
             }
-            Navigation.findNavController(view).navigate(R.id.map_to_home)
         }
     }
     fun mapSearch(){

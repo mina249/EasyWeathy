@@ -29,9 +29,13 @@ class WeatherViewModel(val repo: GeneralRepo, val context:Context):ViewModel() {
         gps.location.observe(context as LifecycleOwner){
             getWeatherResponse(it.first,it.second)
         }
-
     }
-
+        fun getLocationByMap(){
+            var shared = context?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
+            var latitude = shared?.getFloat("lat",0.0f)?.toDouble()
+            var logitude = shared?.getFloat("long" , 0.0f)?.toDouble()
+            getWeatherResponse(latitude!!,logitude!!)
+        }
 
 }
 

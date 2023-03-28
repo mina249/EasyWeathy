@@ -2,15 +2,17 @@ package com.example.easyweathy.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.easyweathy.database.LocalSource
 import com.example.easyweathy.network.RemoteSource
+import kotlinx.coroutines.flow.Flow
 
-class ConcreteRepo private constructor(val remoteSource:RemoteSource):GeneralRepo {
+class ConcreteRepo private constructor(val remoteSource:RemoteSource,val localSource: LocalSource):GeneralRepo {
 
     companion object{
         private var instance:ConcreteRepo?=null
-        fun getInstance( remoteSource: RemoteSource):ConcreteRepo{
+        fun getInstance( remoteSource: RemoteSource,localSource: LocalSource):ConcreteRepo{
             return instance?: synchronized(this){
-                val temp = ConcreteRepo(remoteSource)
+                val temp = ConcreteRepo(remoteSource,localSource )
                 instance=temp
                 temp
             }
@@ -24,5 +26,17 @@ class ConcreteRepo private constructor(val remoteSource:RemoteSource):GeneralRep
     ): WeatherResponse {
        return remoteSource.getWeatherForHomeScreen(lat,lon,units,language)
 
+    }
+
+    override suspend fun addWeatherToFavourite(weatherResponse: WeatherResponse) {
+       localSource.addWeatherToFavourite(weatherResponse)
+    }
+
+    override suspend fun getFavouriteWeather(): Flow<List<WeatherResponse>> {
+        return localSource.getFavouriteWeather()
+    }
+
+    override suspend fun deleteFavouriteWeather(weatherResponse: WeatherResponse) {
+       localSource.deleteFavouriteWeather(weatherResponse)
     }
 }

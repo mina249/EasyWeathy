@@ -1,31 +1,49 @@
 package com.example.easyweathy.model
 
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import java.io.Serializable
+
+@Entity(tableName = "Weather_Table", primaryKeys = ["lat","lon"])
 data class WeatherResponse (
-    val lat: Double,
+     val lat: Double,
     val lon: Double,
     val timezone: String,
     val timezoneOffset: Long,
-    val current: Current,
-    val hourly: List<Current>,
-    val daily: List<Daily>
-)
+     @Embedded
+    val current: Current?,
+    val hourly: List<Current>?,
+    val daily: List<Daily>?
+): Serializable{
+    constructor():this(0.0,0.0,"",0,null, listOf(), listOf())
+}
+
 data class Current (
     val dt: Long,
     val sunrise: Long? = null,
     val sunset: Long? = null,
+
     val temp: Double,
     val feelsLike: Double,
+
     val pressure: Long,
     val humidity: Long,
+
     val dewPoint: Double,
     val uvi: Double,
+
     val clouds: Long,
     val visibility: Long,
+
     val wind_speed: Double,
+
     val windDeg: Long,
     val windGust: Double,
-    val weather: List<Weather>,
-)
+    val weather: List<Weather>?,
+){
+    constructor():this(0,0, 0,0.0,0.0, 0,0, 0.0,0.0, 0,0, 0.0,0,0.0, listOf())
+}
 
 
 data class Weather (

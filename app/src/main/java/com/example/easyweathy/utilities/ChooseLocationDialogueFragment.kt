@@ -1,21 +1,19 @@
-package com.example.easyweathy
+package com.example.easyweathy.utilities
 
 import android.annotation.SuppressLint
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import androidx.fragment.app.DialogFragment
-import androidx.navigation.Navigation
-import com.example.easyweathy.databinding.FragmentChooseLocationDialogueBinding
-import com.example.easyweathy.splash.SplashActivity
+import com.example.easyweathy.MainActivity
+import com.example.easyweathy.databinding.StartingDialogeBinding
 
 @SuppressLint("StaticFieldLeak")
-lateinit var binding: FragmentChooseLocationDialogueBinding
+lateinit var binding: StartingDialogeBinding
 
 class ChooseLocationDialogueFragment : DialogFragment() {
 
@@ -25,7 +23,7 @@ class ChooseLocationDialogueFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = FragmentChooseLocationDialogueBinding.inflate(inflater, container, false)
+        binding = StartingDialogeBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -48,7 +46,7 @@ class ChooseLocationDialogueFragment : DialogFragment() {
                         apply()
                     }
             }
-            startActivity(Intent(requireContext(),MainActivity::class.java))
+            startActivity(Intent(requireContext(), MainActivity::class.java))
         }
     }
 }

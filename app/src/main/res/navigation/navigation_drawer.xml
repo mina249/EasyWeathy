@@ -26,12 +26,15 @@
         tools:layout="@layout/fragment_alarm" />
     <fragment
         android:id="@+id/favouriteFragment"
-        android:name="com.example.easyweathy.favourite.FavouriteFragment"
+        android:name="com.example.easyweathy.favourite.view.FavouriteFragment"
         android:label="fragment_favourite"
         tools:layout="@layout/fragment_favourite" >
         <action
             android:id="@+id/navigate_from_fav_to_map"
             app:destination="@id/mapsFragment" />
+        <action
+            android:id="@+id/navigate_from_fav_to_details"
+            app:destination="@id/detailsFavourite" />
     </fragment>
     <fragment
         android:id="@+id/mapsFragment"
@@ -41,16 +44,33 @@
         <action
             android:id="@+id/map_to_home"
             app:destination="@id/homeFragment" />
+        <argument
+            android:name="home"
+            app:argType="string"
+            android:defaultValue="favourite" />
+        <action
+            android:id="@+id/map_to_favourite"
+            app:destination="@id/favouriteFragment" />
     </fragment>
     <dialog
         android:id="@+id/chooseLocationDialogueFragment"
         android:name="com.example.easyweathy.ChooseLocationDialogueFragment"
         android:label="ChooseLocationDialogueFragment" >
         <action
-            android:id="@+id/dialogue_to_map"
-            app:destination="@id/mapsFragment" />
-        <action
             android:id="@+id/dialogue_to_home"
             app:destination="@id/homeFragment" />
     </dialog>
+    <fragment
+        android:id="@+id/detailsFavourite"
+        android:name="com.example.easyweathy.favourite.view.DetailsFavourite"
+        android:label="DetailsFavourite" >
+        <argument
+            android:name="lat"
+            app:argType="float"
+            android:defaultValue="0.0" />
+        <argument
+            android:name="long"
+            app:argType="float"
+            android:defaultValue="0.0" />
+    </fragment>
 </navigation>

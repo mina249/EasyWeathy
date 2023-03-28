@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
+import com.example.easyweathy.database.ConcreteLocalSource
 import com.example.easyweathy.databinding.FragmentDailyBinding
 import com.example.easyweathy.home.view.viewmodel.WeatherViewModel
 import com.example.easyweathy.home.view.viewmodel.WeatherViewModelFactory
@@ -23,6 +24,7 @@ class DailyFragment() : Fragment() {
     lateinit var weatherResponse: WeatherResponse
     lateinit var weatherFactory: WeatherViewModelFactory
     lateinit var weatherViewModel: WeatherViewModel
+     var location:String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,11 +50,16 @@ class DailyFragment() : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        weatherFactory = WeatherViewModelFactory(ConcreteRepo.getInstance(ConcreteRemoteSource),
+        weatherFactory = WeatherViewModelFactory(
+            ConcreteRepo.getInstance(ConcreteRemoteSource,ConcreteLocalSource.getInstance(requireContext())),
             requireContext()
         )
-        weatherViewModel = ViewModelProvider(this,weatherFactory).get(WeatherViewModel::class.java)
-        weatherViewModel.getLocationByGPS()
+        weatherViewModel = ViewModelProvider(requireActivity(), weatherFactory).get(WeatherViewModel::class.java)
+        if (location == "MapDone"){
+            weatherViewModel.getLocationByMap()
+        }else if (location == "GPS"){
+            weatherViewModel.getLocationByGPS()
+        }
         weatherViewModel.response.observe(viewLifecycleOwner) {
             weatherResponse = it
             dailyAdapter = DailyAdapter(weatherResponse)

@@ -24,4 +24,7 @@
     <string name="ultra">Ultra</string>
     <string name="search_for_location">Search For Location</string>
     <string name="location_prefrence">location</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete_confirmation">Are You Sure , You want to Delete this country weather from your favourites ?</string>
 </resources>

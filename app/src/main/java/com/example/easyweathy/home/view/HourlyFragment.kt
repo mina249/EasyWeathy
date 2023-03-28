@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
+import com.example.easyweathy.database.ConcreteLocalSource
 import com.example.easyweathy.databinding.FragmentHourlyBinding
 import com.example.easyweathy.home.view.viewmodel.WeatherViewModel
 import com.example.easyweathy.home.view.viewmodel.WeatherViewModelFactory
@@ -29,6 +30,7 @@ class HourlyFragment : Fragment() {
     lateinit var weatherResponse: WeatherResponse
     lateinit var weatherFactory: WeatherViewModelFactory
      lateinit var weatherViewModel: WeatherViewModel
+    var location:String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,14 +46,20 @@ class HourlyFragment : Fragment() {
 
    override fun onResume() {
         super.onResume()
-        weatherFactory = WeatherViewModelFactory(ConcreteRepo.getInstance(ConcreteRemoteSource),requireContext()
-        )
-        weatherViewModel = ViewModelProvider(this,weatherFactory).get(WeatherViewModel::class.java)
-        weatherViewModel.getLocationByGPS()
+       weatherFactory = WeatherViewModelFactory(
+           ConcreteRepo.getInstance(ConcreteRemoteSource,ConcreteLocalSource.getInstance(requireContext())),
+           requireContext()
+       )
+       weatherViewModel = ViewModelProvider(requireActivity(), weatherFactory).get(WeatherViewModel::class.java)
+       if (location == "MapDone"){
+           weatherViewModel.getLocationByMap()
+       }else if (location == "GPS"){
+            weatherViewModel.getLocationByGPS()
+       }
         weatherViewModel.response.observe(viewLifecycleOwner) {
             weatherResponse = it
             Log.i("position",it.hourly.toString())
-            hourlyAdapter = HourlyAdapter(it.hourly)
+            hourlyAdapter = HourlyAdapter(it.hourly!!)
             binding.rvHourly.adapter = hourlyAdapter
             binding.rvHourly.layoutManager = hourlyManger
         }

@@ -29,7 +29,6 @@ class LocationByGps constructor(var context: Context){
         if(checkPermission()){
             if(isPermissionEnabled()){
                 requestNewLocation()
-
             }else{
                 val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 context.startActivity(intent)

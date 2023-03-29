@@ -1,5 +1,6 @@
 package com.example.easyweathy.favourite.view
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,11 +23,7 @@ import com.example.easyweathy.model.ConcreteRepo
 import com.example.easyweathy.model.WeatherResponse
 import com.example.easyweathy.network.ConcreteRemoteSource
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FavouriteFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class FavouriteFragment : Fragment(),OnFavouriteDeleteListener ,OnCardFavClickListener{
      lateinit var binding: FragmentFavouriteBinding
      lateinit var favViewModel:FavouriteViewModel
@@ -35,16 +32,11 @@ class FavouriteFragment : Fragment(),OnFavouriteDeleteListener ,OnCardFavClickLi
      var favManger:LayoutManager?=null
     lateinit var weatherResponse: WeatherResponse
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         binding = FragmentFavouriteBinding.inflate(inflater,container,false)
         return binding.root
     }
@@ -54,8 +46,13 @@ class FavouriteFragment : Fragment(),OnFavouriteDeleteListener ,OnCardFavClickLi
         binding.fabAddToFavourite.setOnClickListener(){
             Navigation.findNavController(view).navigate(R.id.navigate_from_fav_to_map)
 
-
             }
+
+    }
+
+
+    override fun onResume() {
+        super.onResume()
         favFactory = FavouriteViewModelFactory(
             ConcreteRepo.getInstance(ConcreteRemoteSource, ConcreteLocalSource.getInstance(requireContext())))
         favViewModel = ViewModelProvider(requireActivity(), favFactory).get(FavouriteViewModel::class.java)
@@ -71,11 +68,6 @@ class FavouriteFragment : Fragment(),OnFavouriteDeleteListener ,OnCardFavClickLi
         }
     }
 
-
-    override fun onResume() {
-        super.onResume()
-    }
-
     override fun deleteWeatherFromFavourite(weatherResponse: WeatherResponse) {
 
         favViewModel.deleteFromFavourite(weatherResponse)
@@ -85,6 +77,8 @@ class FavouriteFragment : Fragment(),OnFavouriteDeleteListener ,OnCardFavClickLi
         val action = FavouriteFragmentDirections.navigateFromFavToDetails(lat.toFloat(),long.toFloat())
         Navigation.findNavController(requireView()).navigate(action)
     }
-
+   /* interface SendLocation{
+        fun getLocation(lat:Double,long:Double)
+    }*/
 
 }

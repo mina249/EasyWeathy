@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class FavouriteViewModel(val repo:GeneralRepo):ViewModel() {
 
-    private val favouriteWeatherList : MutableLiveData<List<WeatherResponse>> = MutableLiveData()
+  private val favouriteWeatherList : MutableLiveData<List<WeatherResponse>> = MutableLiveData()
     val _favouriteWeatherList : LiveData<List<WeatherResponse>> = favouriteWeatherList
 
         fun insertFavouriteWeather(lat:Double,long: Double){
@@ -40,7 +40,13 @@ class FavouriteViewModel(val repo:GeneralRepo):ViewModel() {
             }
 
 
+
+
         }
+    }
+    suspend fun getWeatherFromApi(lat:Double, long:Double):WeatherResponse{
+        return repo.getWeatherForHomeScreen(lat,long,"metric","en")
+
     }
 
 

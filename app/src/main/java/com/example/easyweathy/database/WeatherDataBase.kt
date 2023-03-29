@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import com.example.easyweathy.model.Weather
 import com.example.easyweathy.model.WeatherResponse
 
-@Database(entities = arrayOf(WeatherResponse::class), version =4 )
+@Database(entities = arrayOf(WeatherResponse::class), version =9 )
 @TypeConverters(WeatherConverters::class)
 abstract class WeatherDataBase : RoomDatabase() {
     abstract fun getProductDao(): WeatherDao
@@ -19,7 +19,7 @@ abstract class WeatherDataBase : RoomDatabase() {
         fun getInstance(ctx: Context): WeatherDataBase{
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
-                    ctx.applicationContext,WeatherDataBase::class.java, "weather_dataBase4"
+                    ctx.applicationContext,WeatherDataBase::class.java, "weather_dataBase6"
                 )
                     .build()
                 INSTANCE = instance

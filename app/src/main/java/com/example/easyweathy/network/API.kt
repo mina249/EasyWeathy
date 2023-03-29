@@ -13,6 +13,6 @@ interface API {
                                     , @Query("lon") lon: Double,
                                     @Query("units") units:String,
                                     @Query("lang") language:String,
-                                    @Query("appid") appid:String = "afb57723db0e0d5df64a68b3a1d3026d" ):Response<WeatherResponse>
+                                    @Query("appid") appid:String = "b084b436ae45d555b6a44ab2f656c11d" ):Response<WeatherResponse>
 
 }

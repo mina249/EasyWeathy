@@ -3,6 +3,7 @@ package com.example.easyweathy
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -11,10 +12,12 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.example.easyweathy.databinding.ActivityMainBinding
+import com.example.easyweathy.favourite.view.FavouriteFragment
+import com.example.easyweathy.favourite.view.favourite_details.DetailsFavourite
 import com.google.android.material.navigation.NavigationView
 
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var appConfiguration: AppBarConfiguration
     private lateinit var drawerLayout: DrawerLayout
@@ -56,7 +59,7 @@ class MainActivity : AppCompatActivity(){
 
 
 
-    }
+}
 
 
 

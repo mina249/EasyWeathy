@@ -1,4 +1,4 @@
-package com.example.easyweathy.favourite.view
+package com.example.easyweathy.favourite.view.favourite_details
 
 import android.content.Context
 import android.util.Log
@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.easyweathy.R
 import com.example.easyweathy.databinding.DailyDetailsBinding
-import com.example.easyweathy.databinding.DailyWeatherBinding
-import com.example.easyweathy.home.view.DailyAdapter
 import com.example.easyweathy.model.WeatherResponse
 import java.sql.Date
 import java.text.SimpleDateFormat
@@ -17,7 +15,7 @@ import java.util.*
 
 class DailyFavouriteAdapter(var weatherResponse: WeatherResponse):RecyclerView.Adapter<DailyFavouriteAdapter.DailyFavHolder>() {
     lateinit var binding: DailyDetailsBinding
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyFavouriteAdapter.DailyFavHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyFavHolder {
         val inflater: LayoutInflater = parent.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         binding = DailyDetailsBinding.inflate(inflater,parent,false)
         return DailyFavHolder(binding)
@@ -27,7 +25,7 @@ class DailyFavouriteAdapter(var weatherResponse: WeatherResponse):RecyclerView.A
         return 8
     }
 
-    override fun onBindViewHolder(holder: DailyFavouriteAdapter.DailyFavHolder, position: Int) {
+    override fun onBindViewHolder(holder: DailyFavHolder, position: Int) {
         val milliSecondDate = weatherResponse.daily?.get(position)?.dt
         var date= Date(milliSecondDate?.times(1000L) ?: 0)
         var sdf= SimpleDateFormat("d")

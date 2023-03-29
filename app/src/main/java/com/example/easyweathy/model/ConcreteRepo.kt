@@ -39,4 +39,11 @@ class ConcreteRepo private constructor(val remoteSource:RemoteSource,val localSo
     override suspend fun deleteFavouriteWeather(weatherResponse: WeatherResponse) {
        localSource.deleteFavouriteWeather(weatherResponse)
     }
+
+    override suspend fun getSelectedFavouriteWeatherDetails(
+        lat: Double,
+        long: Double
+    ): Flow<WeatherResponse> {
+        return localSource.getSelectedFavouriteWeatherDetails(lat,long)
+    }
 }

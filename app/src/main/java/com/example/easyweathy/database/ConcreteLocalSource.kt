@@ -32,6 +32,10 @@ class ConcreteLocalSource(context: Context):LocalSource {
     }
 
     override suspend fun deleteFavouriteWeather(weatherResponse: WeatherResponse) {
-            weatherDao.deleteFavouriteRespose(weatherResponse)
+            weatherDao.deleteFavouriteResponse(weatherResponse)
+    }
+
+    override suspend fun getSelectedFavouriteWeatherDetails(lat:Double,long:Double): Flow<WeatherResponse> {
+      return  weatherDao.getFavDetailsWeather(lat,long)
     }
 }

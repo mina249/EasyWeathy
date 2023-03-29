@@ -28,6 +28,7 @@ class FavouriteAdapter(var favList:List<WeatherResponse>,var listener:OnFavourit
     lateinit var weatherResponse:WeatherResponse
 
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavouriteHolder {
         val inflater: LayoutInflater =
             parent.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -40,6 +41,7 @@ class FavouriteAdapter(var favList:List<WeatherResponse>,var listener:OnFavourit
     }
 
     override fun onBindViewHolder(holder: FavouriteHolder, position: Int) {
+
        weatherResponse = favList[position]
         var milliSecondDate = weatherResponse.current?.dt
         Log.i("time", milliSecondDate.toString())
@@ -55,8 +57,10 @@ class FavouriteAdapter(var favList:List<WeatherResponse>,var listener:OnFavourit
            dialogDeleteConfirmation()
 
         }
+        var lat =weatherResponse.lat
+        var long = weatherResponse.lon
         holder.binding.favouriteCardView.setOnClickListener(){
-            cardlistener.showFavouriteDetails(weatherResponse.lat,weatherResponse.lon)
+            cardlistener.showFavouriteDetails( lat, long)
         }
 
     }

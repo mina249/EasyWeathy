@@ -62,7 +62,7 @@
     </dialog>
     <fragment
         android:id="@+id/detailsFavourite"
-        android:name="com.example.easyweathy.favourite.view.DetailsFavourite"
+        android:name="com.example.easyweathy.favourite.view.favourite_details.DetailsFavourite"
         android:label="DetailsFavourite" >
         <argument
             android:name="lat"

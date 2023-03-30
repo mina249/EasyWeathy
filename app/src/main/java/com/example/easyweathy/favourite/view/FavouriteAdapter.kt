@@ -24,9 +24,8 @@ import java.util.logging.Handler
 
 class FavouriteAdapter(var favList:List<WeatherResponse>,var listener:OnFavouriteDeleteListener,var context: Context,var cardlistener:OnCardFavClickListener) :RecyclerView.Adapter<FavouriteAdapter.FavouriteHolder>() {
     lateinit var binding: FavouriteCardBinding
-    lateinit var dialode:Dialog
-    lateinit var weatherResponse:WeatherResponse
-
+    lateinit var dialode: Dialog
+    lateinit var weatherResponse: WeatherResponse
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavouriteHolder {
@@ -42,7 +41,7 @@ class FavouriteAdapter(var favList:List<WeatherResponse>,var listener:OnFavourit
 
     override fun onBindViewHolder(holder: FavouriteHolder, position: Int) {
 
-       weatherResponse = favList[position]
+        weatherResponse = favList[position]
         var milliSecondDate = weatherResponse.current?.dt
         Log.i("time", milliSecondDate.toString())
         var date = Date(milliSecondDate?.times(1000L) ?: 0)
@@ -53,38 +52,45 @@ class FavouriteAdapter(var favList:List<WeatherResponse>,var listener:OnFavourit
         holder.binding.tvFavDegree.text = weatherResponse.hourly?.get(position)?.temp.toString()
         holder.binding.tvFavStatus.text = weatherResponse.current?.weather?.get(0)?.description
         holder.binding.deleteLottie.setOnClickListener() {
-           holder. binding.deleteLottie.display
-           dialogDeleteConfirmation()
+            var dialog = Dialog(context)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setContentView(R.layout.delete_from_favourite)
+            val window: Window? = dialog.getWindow()
+            window?.setLayout(
+                Constraints.LayoutParams.MATCH_PARENT,
+                Constraints.LayoutParams.WRAP_CONTENT
+            )
+            dialog.setCanceledOnTouchOutside(false)
+            dialog.show()
+
+
+            dialog.findViewById<Button>(R.id.btn_delete_fav).setOnClickListener {
+                dialog.dismiss()
+
+                binding.deleteLottie.playAnimation()
+                android.os.Handler().postDelayed({
+                    listener.deleteWeatherFromFavourite(weatherResponse)
+                }, 2500)
+
+
+            }
+            dialog.findViewById<Button>(R.id.btn_cancel_fav).setOnClickListener() {
+                dialog.dismiss()
+            }
 
         }
-        var lat =weatherResponse.lat
-        var long = weatherResponse.lon
-        holder.binding.favouriteCardView.setOnClickListener(){
-            cardlistener.showFavouriteDetails( lat, long)
-        }
+            var lat = weatherResponse.lat
+            var long = weatherResponse.lon
+            holder.binding.favouriteCardView.setOnClickListener() {
+                cardlistener.showFavouriteDetails(lat, long)
+            }
 
     }
-    inner class FavouriteHolder(var binding: FavouriteCardBinding) : ViewHolder(binding.root)
-
-    fun dialogDeleteConfirmation() {
-        var dialog = Dialog(context)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.delete_from_favourite)
-        val window: Window? = dialog.getWindow()
-        window?.setLayout(
-            Constraints.LayoutParams.MATCH_PARENT,
-            Constraints.LayoutParams.WRAP_CONTENT
-        )
-        dialog.setCanceledOnTouchOutside(false)
-        dialog.show()
-
-
-        dialog.findViewById<Button>(R.id.btn_delete_fav).setOnClickListener {
-            listener.deleteWeatherFromFavourite(weatherResponse)
-            dialog.dismiss()
-        }
-        dialog.findViewById<Button>(R.id.btn_cancel_fav).setOnClickListener(){
-            dialog.dismiss()
-        }
-    }
+    inner class FavouriteHolder(var binding: FavouriteCardBinding) :
+        ViewHolder(binding.root)
+    /*fun dialogDeleteConfirmation() {
+    }*/
 }
+
+
+

@@ -18,9 +18,9 @@ class FavouriteViewModel(val repo:GeneralRepo):ViewModel() {
   private val favouriteWeatherList : MutableLiveData<List<WeatherResponse>> = MutableLiveData()
     val _favouriteWeatherList : LiveData<List<WeatherResponse>> = favouriteWeatherList
 
-        fun insertFavouriteWeather(lat:Double,long: Double){
+        fun insertFavouriteWeather(lat:Double,long: Double,units:String,lang:String){
             viewModelScope.launch(Dispatchers.IO) {
-              repo.addWeatherToFavourite(repo.getWeatherForHomeScreen(lat,long,"metric","en"))
+              repo.addWeatherToFavourite(repo.getWeatherForHomeScreen(lat,long,units,lang))
             }
         }
 

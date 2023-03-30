@@ -38,6 +38,11 @@ class FavouriteFragment : Fragment(),OnFavouriteDeleteListener ,OnCardFavClickLi
     ): View? {
 
         binding = FragmentFavouriteBinding.inflate(inflater,container,false)
+        val actionBar = activity?.actionBar
+        actionBar?.setHomeAsUpIndicator(R.drawable.baseline_menu)
+        actionBar?.setDisplayShowHomeEnabled(true)
+        actionBar?.setDisplayHomeAsUpEnabled(true)
+        actionBar?.setTitle(getString(R.string.favourite))
         return binding.root
     }
 
@@ -76,6 +81,7 @@ class FavouriteFragment : Fragment(),OnFavouriteDeleteListener ,OnCardFavClickLi
     override fun showFavouriteDetails(lat: Double, long: Double) {
         val action = FavouriteFragmentDirections.navigateFromFavToDetails(lat.toFloat(),long.toFloat())
         Navigation.findNavController(requireView()).navigate(action)
+
     }
    /* interface SendLocation{
         fun getLocation(lat:Double,long:Double)

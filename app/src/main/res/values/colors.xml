@@ -9,5 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="purple">#AA8ADF</color>
     <color name="background">#202020</color>
+    <color name="transparent">#00000000</color>
+
 
 </resources>

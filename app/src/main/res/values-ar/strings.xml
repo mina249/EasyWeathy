@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ايزي ويزي</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="location_setting">الموقع</string>
+    <string name="gps">الموقع الحالي </string>
+    <string name="map">الخريطة</string>
+    <string name="location_sett">الموقع</string>
+    <string name="english">الانجليزية</string>
+    <string name="arabic">العربية   </string>
+    <string name="language_sett">اللغلة</string>
+    <string name="m_s">م/ث</string>
+    <string name="mile_h">ميل/ساعة</string>
+    <string name="wind_speed">سرعة الرياح</string>
+    <string name="celesius">سيليسيوس</string>
+    <string name="fahrenheit">فهرنهايت</string>
+    <string name="kelvin">كيلفن</string>
+    <string name="temp">درجة الحرارة</string>
+    <string name="wind">الرياح</string>
+    <string name="pressure">الضغط</string>
+    <string name="humidity">الرطوبة</string>
+    <string name="cloud">السحاب</string>
+    <string name="visibility">الرؤية</string>
+    <string name="ultra">فائقة</string>
+    <string name="search_for_location">البحث عن الموقع</string>
+    <string name="location_prefrence">الموقع</string>
+    <string name="delete">مسح</string>
+    <string name="cancel">الغاء</string>
+    <string name="home">الرئيسية</string>
+    <string name="settings">الاعدادات</string>
+    <string name="favourite">المفضلة</string>
+    <string name="alert">التنبيهات</string>
+    <string name="week">هذا الاسبوع</string>
+    <string name="today">اليوم</string>
+    <string name="delete_confirmation">هل أنت متأكد ،انك تريد حذف  طقس هذا البلد من المفضلة؟</string>
+    <string name="alert_type">نوع التنييه</string>
+    <string name="notification">اشعار</string>
+    <string name="alert_sett">منبه</string>
+
+</resources>

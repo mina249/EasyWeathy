@@ -18,10 +18,10 @@ class FavouriteDetailsViewModel(val repo: GeneralRepo ):ViewModel() {
 
 
 
-         fun getWeatherDetailsFromAPI(lat: Double,long: Double){
+         fun getWeatherDetailsFromAPI(lat: Double,long: Double,units:String,lang:String){
              viewModelScope.launch(Dispatchers.IO) {
-                weatherResponseDetails.postValue(repo.getWeatherForHomeScreen(lat, long, "metric", "eng"))
-                 repo.addWeatherToFavourite(repo.getWeatherForHomeScreen(lat, long, "metric", "eng"))
+                weatherResponseDetails.postValue(repo.getWeatherForHomeScreen(lat, long,units,lang))
+                 repo.addWeatherToFavourite(repo.getWeatherForHomeScreen(lat, long, units, lang))
              }
          }
 

@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
+import com.example.easyweathy.R
 import com.example.easyweathy.database.ConcreteLocalSource
 import com.example.easyweathy.databinding.FavouriteDetailesBinding
 import com.example.easyweathy.favourite.view.favourite_details.view_model.FavDetailsViewModelFactory
@@ -35,6 +36,8 @@ class DetailsFavourite : Fragment() {
     lateinit var detailsViewModel:FavouriteDetailsViewModel
     lateinit var detFactory:FavDetailsViewModelFactory
     lateinit var weatherResponse:WeatherResponse
+    lateinit var units:String
+    lateinit var lang:String
     companion object {
         var latitude = 0.0
         var longitude = 0.0
@@ -48,6 +51,10 @@ class DetailsFavourite : Fragment() {
 
         Log.i("yaso3", "$latitude  $longitude")
 
+        var shared =context?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
+        lang = shared?.getString("Language","en")!!
+        units =  shared?.getString("Units","standard")!!
+
     }
 
 
@@ -60,8 +67,8 @@ class DetailsFavourite : Fragment() {
         viewPager = binding.viewPagerDetails
         viewPager?.adapter = viewAdapter
         tab = binding.tabLayDetails
-        tab.addTab(tab.newTab().setText("To Day"))
-        tab.addTab(tab.newTab().setText("This Week"))
+        tab.addTab(tab.newTab().setText(getString(R.string.today)))
+        tab.addTab(tab.newTab().setText(getString(R.string.week)))
         tab.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if(tab!=null)
@@ -91,7 +98,7 @@ class DetailsFavourite : Fragment() {
 
 
             if (NetWorkChecker.getConnectivity(requireContext())==true){
-                detailsViewModel.getWeatherDetailsFromAPI(latitude,longitude)
+                detailsViewModel.getWeatherDetailsFromAPI(latitude,longitude,units,lang)
             }else{
                 var formatlatitude = DecimalFormat("##.####").format(latitude)
                 latitude = formatlatitude.toDouble()

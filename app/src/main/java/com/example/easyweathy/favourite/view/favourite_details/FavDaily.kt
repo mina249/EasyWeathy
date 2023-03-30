@@ -34,12 +34,15 @@ class FavDaily : Fragment() {
     lateinit var details:DetailsFavourite
     var latitude = 0.0
     var longitude = 0.0
+    lateinit var units:String
+    lateinit var lang:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         details = DetailsFavourite()
         latitude = DetailsFavourite.latitude
         longitude = DetailsFavourite.longitude
+
     }
 
     override fun onCreateView(
@@ -54,13 +57,17 @@ class FavDaily : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        var shared =context?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
+        lang = shared?.getString("Language","")!!
+        units =  shared?.getString("Units","standard")!!
+
        detailsFactory = FavDetailsViewModelFactory(
             ConcreteRepo.getInstance(
                 ConcreteRemoteSource,
                 ConcreteLocalSource.getInstance(requireContext())))
         detailsViewModel =  ViewModelProvider(requireActivity(), detailsFactory).get(FavouriteDetailsViewModel::class.java)
         if (NetWorkChecker.getConnectivity(requireContext())==true){
-            detailsViewModel.getWeatherDetailsFromAPI(latitude, longitude)
+            detailsViewModel.getWeatherDetailsFromAPI(latitude, longitude,units,lang)
         }else{
 
             var formatlatitude = DecimalFormat("##.####").format(DetailsFavourite.latitude)

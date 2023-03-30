@@ -47,6 +47,9 @@ class MapsFragment : Fragment(){
         lateinit var favFactory:FavouriteViewModelFactory
           var latitude:Double = 0.0
         var longtiude:Double = 0.0
+    lateinit var units:String
+    lateinit var lang:String
+
         val args :MapsFragmentArgs by navArgs()
     lateinit var weatherResponse:WeatherResponse
    private val callback = OnMapReadyCallback { googleMap ->
@@ -65,6 +68,10 @@ class MapsFragment : Fragment(){
            longtiude = it.longitude
 
        }
+
+       var shared =context?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
+       lang = shared?.getString("Language","")!!
+       units =  shared?.getString("Units","")!!
 
 
     }
@@ -103,7 +110,7 @@ class MapsFragment : Fragment(){
 
                 favViewModel = ViewModelProvider(requireActivity(), favFactory).get(FavouriteViewModel::class.java)
 
-                favViewModel.insertFavouriteWeather(latitude,longtiude)
+                favViewModel.insertFavouriteWeather(latitude,longtiude,units,lang)
 
                 Navigation.findNavController(view).navigate(R.id.map_to_favourite)
             }

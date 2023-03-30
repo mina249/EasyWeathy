@@ -12,13 +12,22 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/home_to_map"
-            app:destination="@id/mapsFragment" />
+            app:destination="@id/mapsFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
         android:name="com.example.easyweathy.settings.SettingFragment"
         android:label="fragment_setting"
-        tools:layout="@layout/fragment_setting" />
+        tools:layout="@layout/fragment_setting" >
+        <action
+            android:id="@+id/setting_to_map"
+            app:destination="@id/mapsFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/setting_to_home"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/alertFragment"
         android:name="com.example.easyweathy.alert.AlertFragment"
@@ -34,7 +43,8 @@
             app:destination="@id/mapsFragment" />
         <action
             android:id="@+id/navigate_from_fav_to_details"
-            app:destination="@id/detailsFavourite" />
+            app:destination="@id/detailsFavourite"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/mapsFragment"
@@ -43,7 +53,9 @@
         tools:layout="@layout/fragment_maps" >
         <action
             android:id="@+id/map_to_home"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/mapsFragment"
+            app:popUpToInclusive="true" />
         <argument
             android:name="home"
             app:argType="string"

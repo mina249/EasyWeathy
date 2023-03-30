@@ -1,6 +1,8 @@
 package com.example.easyweathy
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +17,7 @@ import com.example.easyweathy.databinding.ActivityMainBinding
 import com.example.easyweathy.favourite.view.FavouriteFragment
 import com.example.easyweathy.favourite.view.favourite_details.DetailsFavourite
 import com.google.android.material.navigation.NavigationView
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -38,11 +41,13 @@ class MainActivity : AppCompatActivity() {
         actionBar?.setHomeAsUpIndicator(R.drawable.baseline_menu)
         actionBar?.setDisplayShowHomeEnabled(true)
         actionBar?.setDisplayHomeAsUpEnabled(true)
-      //  var dialog = ChooseLocationDialogueFragment()
-       // dialog.show(supportFragmentManager,"initial dialogue")
+        actionBar?.setTitle(getString(R.string.app_name))
+
+
 
         
     }
+
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -55,6 +60,8 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+
 
 
 

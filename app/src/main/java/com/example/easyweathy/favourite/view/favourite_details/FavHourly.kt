@@ -1,5 +1,6 @@
 package com.example.easyweathy.favourite.view.favourite_details
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -35,12 +36,15 @@ class FavHourly : Fragment() {
     lateinit var details:DetailsFavourite
     var latitude = 0.0
     var longitude = 0.0
+    lateinit var units:String
+    lateinit var lang:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
             details = DetailsFavourite()
         latitude = DetailsFavourite.latitude
         longitude = DetailsFavourite.longitude
+
     }
 
     override fun onCreateView(
@@ -53,13 +57,16 @@ class FavHourly : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var shared =context?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
+        lang = shared?.getString("Language","en")!!
+        units =  shared?.getString("Units","standard")!!
        detailsFactory = FavDetailsViewModelFactory(
             ConcreteRepo.getInstance(
                 ConcreteRemoteSource,
                 ConcreteLocalSource.getInstance(requireContext())))
         detailsViewModel =  ViewModelProvider(requireActivity(), detailsFactory).get(FavouriteDetailsViewModel::class.java)
         if (NetWorkChecker.getConnectivity(requireContext())==true){
-            detailsViewModel.getWeatherDetailsFromAPI(DetailsFavourite.latitude, DetailsFavourite.longitude)
+            detailsViewModel.getWeatherDetailsFromAPI(DetailsFavourite.latitude, DetailsFavourite.longitude,units,lang)
         }else{
             var formatlatitude = DecimalFormat("##.####").format(DetailsFavourite.latitude)
             DetailsFavourite.latitude = formatlatitude.toDouble()

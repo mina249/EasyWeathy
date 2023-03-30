@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.easyweathy.R
+import com.example.easyweathy.databinding.FragmentAlarmBinding
 
 /**
  * A simple [Fragment] subclass.
@@ -13,6 +14,8 @@ import com.example.easyweathy.R
  * create an instance of this fragment.
  */
 class AlertFragment : Fragment() {
+
+    lateinit var binding: FragmentAlarmBinding
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,8 +27,13 @@ class AlertFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        return inflater.inflate(R.layout.fragment_alarm, container, false)
+        binding = FragmentAlarmBinding.inflate(inflater,container,false)
+        val actionBar = activity?.actionBar
+        actionBar?.setHomeAsUpIndicator(R.drawable.baseline_menu)
+        actionBar?.setDisplayShowHomeEnabled(true)
+        actionBar?.setDisplayHomeAsUpEnabled(true)
+        actionBar?.setTitle(getString(R.string.alert))
+        return binding.root
     }
 
 

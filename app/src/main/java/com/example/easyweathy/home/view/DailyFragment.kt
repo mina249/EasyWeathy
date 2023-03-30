@@ -1,10 +1,12 @@
 package com.example.easyweathy.home.view
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
@@ -15,6 +17,7 @@ import com.example.easyweathy.home.view.viewmodel.WeatherViewModelFactory
 import com.example.easyweathy.model.ConcreteRepo
 import com.example.easyweathy.model.WeatherResponse
 import com.example.easyweathy.network.ConcreteRemoteSource
+import com.example.easyweathy.utilities.LocationByGps
 
 
 class DailyFragment() : Fragment() {
@@ -50,15 +53,23 @@ class DailyFragment() : Fragment() {
 
     override fun onResume() {
         super.onResume()
+
         weatherFactory = WeatherViewModelFactory(
             ConcreteRepo.getInstance(ConcreteRemoteSource,ConcreteLocalSource.getInstance(requireContext())),
             requireContext()
         )
         weatherViewModel = ViewModelProvider(requireActivity(), weatherFactory).get(WeatherViewModel::class.java)
+        var shared =context?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
+        var lang = shared?.getString("Language","en")!!
+        var units =shared?.getString("Units","")!!
         if (location == "MapDone"){
-            weatherViewModel.getLocationByMap()
+            weatherViewModel.getLocationByMap(units,lang)
         }else if (location == "GPS"){
-            weatherViewModel.getLocationByGPS()
+            var gps = LocationByGps(requireContext())
+            gps.getLastLocation()
+            gps.location.observe(context as LifecycleOwner) {
+                weatherViewModel.getLocationByGPS(it.first,it.second, units, lang)
+            }
         }
         weatherViewModel.response.observe(viewLifecycleOwner) {
             weatherResponse = it

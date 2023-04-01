@@ -20,7 +20,11 @@ class FavouriteViewModel(val repo:GeneralRepo):ViewModel() {
 
         fun insertFavouriteWeather(lat:Double,long: Double,units:String,lang:String){
             viewModelScope.launch(Dispatchers.IO) {
-              repo.addWeatherToFavourite(repo.getWeatherForHomeScreen(lat,long,units,lang))
+
+                repo.getWeatherForHomeScreen(lat,long,units,lang).collect{
+                    repo.addWeatherToFavourite(it)
+                }
+
             }
         }
 
@@ -44,10 +48,10 @@ class FavouriteViewModel(val repo:GeneralRepo):ViewModel() {
 
         }
     }
-    suspend fun getWeatherFromApi(lat:Double, long:Double):WeatherResponse{
+  /*  suspend fun getWeatherFromApi(lat:Double, long:Double):WeatherResponse{
         return repo.getWeatherForHomeScreen(lat,long,"metric","en")
 
-    }
+    }*/
 
 
 

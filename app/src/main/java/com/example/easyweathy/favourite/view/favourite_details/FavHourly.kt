@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.easyweathy.R
@@ -24,6 +25,9 @@ import com.example.easyweathy.model.ConcreteRepo
 import com.example.easyweathy.model.WeatherResponse
 import com.example.easyweathy.network.ConcreteRemoteSource
 import com.example.easyweathy.network.NetWorkChecker
+import com.example.easyweathy.utilities.APIState
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 
 class FavHourly : Fragment() {
@@ -57,17 +61,27 @@ class FavHourly : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var shared =context?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
-        lang = shared?.getString("Language","en")!!
-        units =  shared?.getString("Units","standard")!!
-       detailsFactory = FavDetailsViewModelFactory(
+        var shared = context?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
+        lang = shared?.getString("Language", "en")!!
+        units = shared?.getString("Units", "standard")!!
+        detailsFactory = FavDetailsViewModelFactory(
             ConcreteRepo.getInstance(
                 ConcreteRemoteSource,
-                ConcreteLocalSource.getInstance(requireContext())))
-        detailsViewModel =  ViewModelProvider(requireActivity(), detailsFactory).get(FavouriteDetailsViewModel::class.java)
-        if (NetWorkChecker.getConnectivity(requireContext())==true){
-            detailsViewModel.getWeatherDetailsFromAPI(DetailsFavourite.latitude, DetailsFavourite.longitude,units,lang)
-        }else{
+                ConcreteLocalSource.getInstance(requireContext())
+            )
+        )
+        detailsViewModel = ViewModelProvider(
+            requireActivity(),
+            detailsFactory
+        ).get(FavouriteDetailsViewModel::class.java)
+        if (NetWorkChecker.getConnectivity(requireContext()) == true) {
+            detailsViewModel.getWeatherDetailsFromAPI(
+                DetailsFavourite.latitude,
+                DetailsFavourite.longitude,
+                units,
+                lang
+            )
+        } else {
             var formatlatitude = DecimalFormat("##.####").format(DetailsFavourite.latitude)
             DetailsFavourite.latitude = formatlatitude.toDouble()
             var formatlongitude = DecimalFormat("##.####").format(DetailsFavourite.longitude)
@@ -78,17 +92,25 @@ class FavHourly : Fragment() {
                 DetailsFavourite.longitude
             )
         }
-        detailsViewModel.responseDetails.observe(viewLifecycleOwner){
-            weatherResponse = it
-            Log.i("jesus",it.hourly?.size.toString())
-            hourlyAdapter = HourlyFavDetailsAdapter(weatherResponse.hourly!!)
-           hourlyManger = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL,false)
-            binding.rvHourlyFav.apply {
-                adapter = hourlyAdapter
-                layoutManager = hourlyManger
+        lifecycleScope.launch {
+            detailsViewModel.responseDetails.collectLatest { result ->
+                when (result) {
+                    is APIState.Sucess -> {
+                        weatherResponse = result.weatherResponse
+                        hourlyAdapter = HourlyFavDetailsAdapter(weatherResponse.hourly!!)
+                        hourlyManger =
+                            LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+                        binding.rvHourlyFav.apply {
+                            adapter = hourlyAdapter
+                            layoutManager = hourlyManger
+                        }
+                    }
+                    else -> {}
+                }
             }
         }
     }
 }
+
 
 

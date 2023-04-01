@@ -18,12 +18,12 @@ class ConcreteRepo private constructor(val remoteSource:RemoteSource,val localSo
             }
         }
     }
-    override suspend fun getWeatherForHomeScreen(
+    override  fun getWeatherForHomeScreen(
         lat: Double,
         lon: Double,
         units: String,
         language: String
-    ): WeatherResponse {
+    ): Flow<WeatherResponse> {
        return remoteSource.getWeatherForHomeScreen(lat,lon,units,language)
 
     }

@@ -9,9 +9,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.viewpager2.widget.ViewPager2
 import com.example.easyweathy.R
@@ -22,8 +24,12 @@ import com.example.easyweathy.home.view.viewmodel.WeatherViewModelFactory
 import com.example.easyweathy.model.ConcreteRepo
 import com.example.easyweathy.model.WeatherResponse
 import com.example.easyweathy.network.ConcreteRemoteSource
+import com.example.easyweathy.utilities.APIState
 import com.example.easyweathy.utilities.LocationByGps
+import com.example.easyweathy.utilities.Utility
 import com.google.android.material.tabs.TabLayout
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -62,15 +68,6 @@ class HomeFragment : Fragment() {
     @SuppressLint("SimpleDateFormat")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-      /*  var shared = activity?.getSharedPreferences("appPrefrence",MODE_PRIVATE)
-         location = shared?.getString("location","")!!
-         lang = shared?.getString("Language","en")!!
-         units =  shared?.getString("Units","")!!
-        if (location.equals("Map")) {
-            val action = HomeFragmentDirections.homeToMap("Home")
-            Navigation.findNavController(view).navigate(action)
-        }*/
-
         viewAdapter = ViewPagerAdapter(activity?.supportFragmentManager,lifecycle)
         viewPager = binding.viewPagerHome
         viewPager?.adapter = viewAdapter
@@ -110,51 +107,82 @@ class HomeFragment : Fragment() {
         super.onResume()
 
         weatherFactory = WeatherViewModelFactory(
-            ConcreteRepo.getInstance(ConcreteRemoteSource,ConcreteLocalSource.getInstance(requireContext())),
+            ConcreteRepo.getInstance(
+                ConcreteRemoteSource,
+                ConcreteLocalSource.getInstance(requireContext())
+            ),
             requireContext()
         )
         weatherViewModel = ViewModelProvider(requireActivity(), weatherFactory).get(WeatherViewModel::class.java)
-        var shared = activity?.getSharedPreferences("appPrefrence",MODE_PRIVATE)
-        location = shared?.getString("location","")!!
-        lang = shared?.getString("Language","en")!!
-        units =  shared?.getString("Units","")!!
+
+        var shared = activity?.getSharedPreferences("appPrefrence", MODE_PRIVATE)
+        location = shared?.getString("location", "")!!
+        lang = shared?.getString("Language", "en")!!
+        units = shared?.getString("Units", "")!!
         if (location.equals("Map")) {
             val action = HomeFragmentDirections.homeToMap("Home")
             Navigation.findNavController(requireView()).navigate(action)
         }
-        if (location == "MapDone"){
-            weatherViewModel.getLocationByMap(units,lang)
-            Log.i("hoba","GPS")
-        }else if (location == "GPS"){
+        if (location == "MapDone") {
+            weatherViewModel.getLocationByMap(units, lang)
+        } else if (location == "GPS") {
             var gps = LocationByGps(requireContext())
             gps.getLastLocation()
             gps.location.observe(context as LifecycleOwner) {
-                weatherViewModel.getLocationByGPS(it.first,it.second, units, lang)
+                weatherViewModel.getLocationByGPS(it.first, it.second, units, lang)
             }
 
         }
-                        weatherViewModel.response.observe(requireActivity()) {
-                        weatherResponse = it
-                        binding.tvHomeCountry.text = weatherResponse.timezone
-                        var milliSecondDate = weatherResponse.current?.dt
-                        Log.i("time",milliSecondDate.toString())
-                        var date = Date(milliSecondDate?.times(1000L) ?: 0)
-                        val timeZoneDate = SimpleDateFormat("dd  MMM , hh : mm a ")
-                        var formatedDate = timeZoneDate.format(date)
-                        binding.tvHomeDate.text = formatedDate
-                        binding.tvHomeTemp.text = weatherResponse.current?.temp.toString()
-                            Log.i("temp",weatherResponse.current?.temp.toString())
-                        binding.tvHomeDes.text = weatherResponse.current?.weather?.get(0)?.description
-                        binding.tvHomeCloud.text = weatherResponse.current?.clouds.toString()
-                        binding.tvHomeHumidity.text = weatherResponse.current?.humidity.toString()
-                        binding.tvHomePress.text = weatherResponse.current?.pressure.toString()
-                        binding.tvHomeWind.text = weatherResponse.current?.wind_speed.toString()
-                        binding.tvHomeVisiblity.text = weatherResponse.current?.visibility.toString()
-                        binding.tvHomeUltra.text = weatherResponse.current?.uvi.toString()
-                    }
 
 
+    lifecycleScope.launch {
+        weatherViewModel.response.collectLatest { result ->
+            when (result) {
+                is APIState.Sucess -> {
+                    weatherResponse = result.weatherResponse
+                    binding.homeNested.visibility = View.VISIBLE
+                    binding.loading.visibility = View.GONE
+                    setHomeData()
+                }
+                is APIState.Failure->{
+                    Toast.makeText(context,result.msg.toString(),Toast.LENGTH_SHORT)
+                    binding.homeNested.visibility = View.GONE
+
+                }
+                else -> {
+                    binding.loading.visibility = View.VISIBLE
+                    binding.loading.repeatCount = Int.MAX_VALUE
+                    binding.homeNested.visibility = View.GONE
+                }
+            }
         }
+    }
+
+    }
+
+
+
+    private fun setHomeData(){
+        binding.tvHomeCountry.text = weatherResponse.timezone
+        var milliSecondDate = weatherResponse.current?.dt
+        Log.i("time", milliSecondDate.toString())
+        var date = Date(milliSecondDate?.times(1000L) ?: 0)
+        val timeZoneDate = SimpleDateFormat("dd  MMM , hh : mm a ")
+        var formatedDate = timeZoneDate.format(date)
+        var img = weatherResponse?.current?.weather?.get(0)?.let { Utility.getImage(it.icon) }
+        binding.imgHomeWeather.setImageResource(img!!)
+        binding.tvHomeDate.text = formatedDate
+        binding.tvHomeTemp.text = weatherResponse.current?.temp.toString()
+        Log.i("temp", weatherResponse.current?.temp.toString())
+        binding.tvHomeDes.text = weatherResponse.current?.weather?.get(0)?.description
+        binding.tvHomeCloud.text = weatherResponse.current?.clouds.toString()
+        binding.tvHomeHumidity.text = weatherResponse.current?.humidity.toString()
+        binding.tvHomePress.text = weatherResponse.current?.pressure.toString()
+        binding.tvHomeWind.text = weatherResponse.current?.wind_speed.toString()
+        binding.tvHomeVisiblity.text = weatherResponse.current?.visibility.toString()
+        binding.tvHomeUltra.text = weatherResponse.current?.uvi.toString()
+
+    }
 }
 
 

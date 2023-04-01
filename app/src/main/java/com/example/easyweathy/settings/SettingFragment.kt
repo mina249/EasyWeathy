@@ -2,6 +2,7 @@ package com.example.easyweathy.settings
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
@@ -23,6 +24,7 @@ import java.util.Locale
 class SettingFragment : Fragment() {
 
     lateinit var binding: FragmentSettingBinding
+     var shared:SharedPreferences?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +38,7 @@ class SettingFragment : Fragment() {
     ): View? {
 
         binding = FragmentSettingBinding.inflate(inflater, container, false)
-        var shared = activity?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
+         shared = activity?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
         var location = shared?.getString("location", "")!!
         if (location == "MapDone") {
             binding.rbMap.isChecked = true
@@ -66,6 +68,7 @@ class SettingFragment : Fragment() {
         onCelesisSelect()
         onFerhenhiteSelect()
         onKilvenSelect()
+        getRadioButtonChecked()
 
     }
 
@@ -75,7 +78,6 @@ class SettingFragment : Fragment() {
                 ?.edit()?.apply {
                     putString("location", "Map")
                     apply()
-                    Log.i("eslaaaam", "Milaaaad")
                     Navigation.findNavController(requireView()).navigate(R.id.setting_to_home)
                 }
         }
@@ -107,6 +109,7 @@ class SettingFragment : Fragment() {
                         putString("Units","metric")
                         apply()
                     }
+                binding.rbCelesius.isChecked = true
             }
         }
 
@@ -118,8 +121,8 @@ class SettingFragment : Fragment() {
         )?.edit()?.apply {
             putString("Units","imperial")
             apply()
-
         }
+        binding.rbFerhenhite.isChecked = true
     }
 
 }
@@ -133,6 +136,7 @@ class SettingFragment : Fragment() {
                 putString("Units","metric")
                 apply()
             }
+            binding.rbMeterSec.isChecked = true
         }
     }
 
@@ -158,6 +162,7 @@ class SettingFragment : Fragment() {
                 apply()
 
             }
+            binding.rbMileHour.isChecked = true
         }
 
         }
@@ -203,6 +208,32 @@ class SettingFragment : Fragment() {
         configuration.setLocale(locale)
         context?.resources?.updateConfiguration(configuration,context?.resources?.displayMetrics)
         activity?.recreate()
+    }
+
+
+    fun getRadioButtonChecked(){
+        shared = activity?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
+        var units = shared?.getString("Units", "")
+        var lang = shared?.getString("Language", "")
+        if (units == "metric"){
+            binding.rbCelesius.isChecked = true
+            binding.rbMeterSec.isChecked = true
+        }else if(units == "standard"){
+            binding.rbKelvin.isChecked = true
+
+        }else if(units == "imperial"){
+            binding.rbFerhenhite.isChecked = true
+            binding.rbMileHour.isChecked = true
+        }else{}
+
+        if(lang == "en"){
+            binding.rbEnglish.isChecked = true
+        }else if(lang == "ar"){
+            binding.rbArabic.isChecked = true
+        }else{
+
+        }
+
     }
 
 }

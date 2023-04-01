@@ -34,7 +34,7 @@
         app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/btn_star_big_on" />
+        app:srcCompat="@drawable/app_logo_transpernt" />
 
     <TextView
         android:id="@+id/tv_hourly_degree"

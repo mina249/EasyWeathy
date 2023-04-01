@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.easyweathy.R
 import com.example.easyweathy.databinding.DailyDetailsBinding
 import com.example.easyweathy.model.WeatherResponse
+import com.example.easyweathy.utilities.Utility
 import java.sql.Date
 import java.text.SimpleDateFormat
 import java.util.*
@@ -36,13 +37,12 @@ class DailyFavouriteAdapter(var weatherResponse: WeatherResponse):RecyclerView.A
         calendar.set(Calendar.DAY_OF_MONTH,intDay)
         var format= SimpleDateFormat("EEEE")
         var day=format.format(calendar.time)
-        Log.i("daily position",position.toString())
+        val image = Utility.getImage(weatherResponse.current?.weather?.get(0)?.icon!!)
+        binding.imDailyDet.setImageResource(image)
         binding.tvDayDet.text = day
-        binding.imDailyDet.setImageResource(R.drawable.sun)
         binding.tvDayDesDet.text = weatherResponse.daily?.get(position)?.weather?.get(0)?.description
         var minTemp = weatherResponse?.daily?.get(position)?.temp?.max
         var maxTemp = weatherResponse.daily?.get(position)?.temp?.min
-
         binding.tvDayDegreeDet.text= minTemp.toString() + " / " + maxTemp
     }
 

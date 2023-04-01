@@ -10,6 +10,7 @@ import com.example.easyweathy.R
 import com.example.easyweathy.databinding.HourlyFavDetailsBinding
 import com.example.easyweathy.databinding.HourlyFavDetailsTwoBinding
 import com.example.easyweathy.model.Current
+import com.example.easyweathy.utilities.Utility
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -39,12 +40,14 @@ class HourlyFavDetailsAdapter(var hourly:List<Current>):
         val sdf= SimpleDateFormat("h a")
         sdf.timeZone= TimeZone.getDefault()
         val formatedHour=sdf.format(hour)
+        val image = Utility.getImage(hourly.get(position).weather?.get(0)?.icon!!)
         if(holder is HourlyFavHolder2){
+            holder.binding2.imgHourlyDetails.setImageResource(image)
             holder.binding2?.tvHoursHourlyDetails?.text = formatedHour
             holder.binding2?.tvDegreeHourlyDetails?.text =hourly[position].temp.toString()
         }else if(holder is HourlyFavHolder){
             holder.binding?.tvHoursDailyDet ?.text = formatedHour
-            holder.binding?.imgDailyHourDet?.setImageResource(R.drawable.sun)
+            holder.binding?.imgDailyHourDet?.setImageResource(image)
             holder.binding?.tvHourlyDegreeDet?.text = hourly[position].temp.toString()
         }
     }

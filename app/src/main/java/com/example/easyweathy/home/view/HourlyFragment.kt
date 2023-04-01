@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.example.easyweathy.database.ConcreteLocalSource
@@ -18,7 +19,10 @@ import com.example.easyweathy.home.view.viewmodel.WeatherViewModelFactory
 import com.example.easyweathy.model.ConcreteRepo
 import com.example.easyweathy.model.WeatherResponse
 import com.example.easyweathy.network.ConcreteRemoteSource
+import com.example.easyweathy.utilities.APIState
 import com.example.easyweathy.utilities.LocationByGps
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
 /**
@@ -48,36 +52,49 @@ class HourlyFragment : Fragment() {
 
 
    override fun onResume() {
-        super.onResume()
+       super.onResume()
 
        weatherFactory = WeatherViewModelFactory(
-           ConcreteRepo.getInstance(ConcreteRemoteSource,ConcreteLocalSource.getInstance(requireContext())),
+           ConcreteRepo.getInstance(
+               ConcreteRemoteSource,
+               ConcreteLocalSource.getInstance(requireContext())
+           ),
            requireContext()
        )
 
-       weatherViewModel = ViewModelProvider(requireActivity(), weatherFactory).get(WeatherViewModel::class.java)
-       var shared =context?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
-       var lang = shared?.getString("Language","en")!!
-       var units =  shared?.getString("Units","")!!
-       if (location == "MapDone"){
-           weatherViewModel.getLocationByMap(units,lang)
-       }else if (location == "GPS"){
+       weatherViewModel =
+           ViewModelProvider(requireActivity(), weatherFactory).get(WeatherViewModel::class.java)
+       var shared = context?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
+       var lang = shared?.getString("Language", "en")!!
+       var units = shared?.getString("Units", "")!!
+       if (location == "MapDone") {
+           weatherViewModel.getLocationByMap(units, lang)
+       } else if (location == "GPS") {
            var gps = LocationByGps(requireContext())
            gps.getLastLocation()
            gps.location.observe(context as LifecycleOwner) {
-               weatherViewModel.getLocationByGPS(it.first,it.second, units, lang)
+               weatherViewModel.getLocationByGPS(it.first, it.second, units, lang)
            }
        }
-        weatherViewModel.response.observe(viewLifecycleOwner) {
-            weatherResponse = it
-            Log.i("position",it.hourly.toString())
-            hourlyAdapter = HourlyAdapter(it.hourly!!)
-            binding.rvHourly.adapter = hourlyAdapter
-            binding.rvHourly.layoutManager = hourlyManger
-        }
+       lifecycleScope.launch {
+           weatherViewModel.response.collectLatest {result->
 
-    }
+                  when(result){
+                      is APIState.Sucess->{
+                          weatherResponse = result.weatherResponse
+
+                          hourlyAdapter = HourlyAdapter(weatherResponse.hourly!!)
+                          binding.rvHourly.adapter = hourlyAdapter
+                          binding.rvHourly.layoutManager = hourlyManger
+                      }
+
+                      else -> {}
+                  }
+                  }
+
+           }
+
+       }
+   }
 
 
-
-}

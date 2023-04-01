@@ -9,32 +9,34 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.easyweathy.model.GeneralRepo
 import com.example.easyweathy.model.WeatherResponse
+import com.example.easyweathy.utilities.APIState
 import com.example.easyweathy.utilities.LocationByGps
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 class WeatherViewModel(val repo: GeneralRepo, val context:Context):ViewModel() {
-    private val weatherResponse: MutableLiveData<WeatherResponse> = MutableLiveData()
-    val response: LiveData<WeatherResponse> = weatherResponse
+    private val weatherResponse: MutableStateFlow<APIState> = MutableStateFlow(APIState.Loading())
+    val response: StateFlow<APIState> = weatherResponse
            lateinit var lang:String
            lateinit var units:String
 
     fun getWeatherResponse(lat:Double,long:Double,units:String,lang:String){
 
         viewModelScope.launch(Dispatchers.IO){
-
-            weatherResponse.postValue( repo.getWeatherForHomeScreen(lat,long,
-                units,lang))
+            repo.getWeatherForHomeScreen(lat,long,units,lang)
+                .catch {
+                    APIState.Failure(it)
+                 }.collect{
+                    weatherResponse.value = APIState.Sucess(it)
+                }
         }
     }
 
     fun getLocationByGPS(lat:Double,long: Double, units:String,lang: String){
-       //var gps = LocationByGps(context)
-      //  gps.getLastLocation()
         getWeatherResponse(lat,long,units,lang)
-       /* gps.location.observe(context as LifecycleOwner){
-
-        }*/
     }
         fun getLocationByMap(units:String,lang: String){
             var shared = context?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)

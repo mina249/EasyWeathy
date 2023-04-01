@@ -38,7 +38,7 @@ class SplashActivity : AppCompatActivity() {
         }, 4000)
 
         var shared =this.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
-        var lang = shared?.getString("Language","")!!
+        var lang = shared?.getString("Language","en")!!
             setLocale(lang)
 
         val actionBar = supportActionBar

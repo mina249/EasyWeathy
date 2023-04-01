@@ -12,6 +12,7 @@ import com.example.easyweathy.databinding.HourlyWeatherBinding
 import com.example.easyweathy.databinding.HourlyWeatherHomeBinding
 import com.example.easyweathy.model.Current
 import com.example.easyweathy.model.WeatherResponse
+import com.example.easyweathy.utilities.Utility
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,16 +41,17 @@ class HourlyAdapter(var hourly:List<Current>):
         val sdf= SimpleDateFormat("h a")
         sdf.timeZone=TimeZone.getDefault()
         val formatedHour=sdf.format(hour)
-        Log.i("test",hourly.toString())
-        Log.i("test",position.toString())
+        val icon = hourly[position].weather?.get(0)?.icon!!
+        val img = Utility.getImage(icon)
+        Log.i("imageBefore,",hourly[position].weather?.get(0)?.icon!!)
         if(holder is HourlyHolder2){
-
-            holder.binding2?.tvHoursHourly?.text = formatedHour
-            holder.binding2?.tvDegreeHourly?.text =hourly[position].temp.toString()
+            holder.binding2.imgHourly.setImageResource(img)
+            holder.binding2.tvHoursHourly.text = formatedHour
+            holder.binding2.tvDegreeHourly.text =hourly[position].temp.toString()
         }else if(holder is HourlyHolder){
-            holder.binding?.tvHoursDaily ?.text = formatedHour
-            holder.binding?.imgDailyHour?.setImageResource(R.drawable.sun)
-            holder.binding?.tvHourlyDegree?.text = hourly[position].temp.toString()
+            holder.binding.imgDailyHour.setImageResource(img)
+            holder.binding.tvHoursDaily.text = formatedHour
+            holder.binding.tvHourlyDegree.text = hourly[position].temp.toString()
         }
     }
     override fun getItemViewType(position: Int): Int {

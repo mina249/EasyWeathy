@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.easyweathy.R
@@ -22,6 +23,9 @@ import com.example.easyweathy.model.ConcreteRepo
 import com.example.easyweathy.model.WeatherResponse
 import com.example.easyweathy.network.ConcreteRemoteSource
 import com.example.easyweathy.network.NetWorkChecker
+import com.example.easyweathy.utilities.APIState
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 
 class FavDaily : Fragment() {
@@ -57,18 +61,23 @@ class FavDaily : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var shared =context?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
-        lang = shared?.getString("Language","")!!
-        units =  shared?.getString("Units","standard")!!
+        var shared = context?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
+        lang = shared?.getString("Language", "")!!
+        units = shared?.getString("Units", "standard")!!
 
-       detailsFactory = FavDetailsViewModelFactory(
+        detailsFactory = FavDetailsViewModelFactory(
             ConcreteRepo.getInstance(
                 ConcreteRemoteSource,
-                ConcreteLocalSource.getInstance(requireContext())))
-        detailsViewModel =  ViewModelProvider(requireActivity(), detailsFactory).get(FavouriteDetailsViewModel::class.java)
-        if (NetWorkChecker.getConnectivity(requireContext())==true){
-            detailsViewModel.getWeatherDetailsFromAPI(latitude, longitude,units,lang)
-        }else{
+                ConcreteLocalSource.getInstance(requireContext())
+            )
+        )
+        detailsViewModel = ViewModelProvider(
+            requireActivity(),
+            detailsFactory
+        ).get(FavouriteDetailsViewModel::class.java)
+        if (NetWorkChecker.getConnectivity(requireContext()) == true) {
+            detailsViewModel.getWeatherDetailsFromAPI(latitude, longitude, units, lang)
+        } else {
 
             var formatlatitude = DecimalFormat("##.####").format(DetailsFavourite.latitude)
             DetailsFavourite.latitude = formatlatitude.toDouble()
@@ -80,18 +89,24 @@ class FavDaily : Fragment() {
                 DetailsFavourite.longitude
             )
         }
+        lifecycleScope.launch {
+            detailsViewModel.responseDetails.collectLatest {result->
+                when(result){
+                    is APIState.Sucess->{
+                        dailyAdapter = DailyFavouriteAdapter(result.weatherResponse)
+                        dailyManger = LinearLayoutManager(requireContext())
+                        binding.rvDailyFav.apply {
+                            adapter = dailyAdapter
+                            layoutManager = dailyManger
+                        }
+                    }
+                    else -> {}
+                }
 
-        detailsViewModel.responseDetails.observe(viewLifecycleOwner){
-            dailyAdapter = DailyFavouriteAdapter(it)
-            dailyManger = LinearLayoutManager(requireContext())
-            binding.rvDailyFav.apply {
-                adapter = dailyAdapter
-                layoutManager = dailyManger
+
+            }
+
             }
         }
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-}

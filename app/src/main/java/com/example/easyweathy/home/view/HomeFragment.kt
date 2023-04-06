@@ -24,6 +24,7 @@ import com.example.easyweathy.home.view.viewmodel.WeatherViewModelFactory
 import com.example.easyweathy.model.ConcreteRepo
 import com.example.easyweathy.model.WeatherResponse
 import com.example.easyweathy.network.ConcreteRemoteSource
+import com.example.easyweathy.network.NetWorkChecker
 import com.example.easyweathy.utilities.APIState
 import com.example.easyweathy.utilities.LocationByGps
 import com.example.easyweathy.utilities.Utility
@@ -123,16 +124,30 @@ class HomeFragment : Fragment() {
             val action = HomeFragmentDirections.homeToMap("Home")
             Navigation.findNavController(requireView()).navigate(action)
         }
-        if (location == "MapDone") {
-            weatherViewModel.getLocationByMap(units, lang)
-        } else if (location == "GPS") {
-            var gps = LocationByGps(requireContext())
-            gps.getLastLocation()
-            gps.location.observe(context as LifecycleOwner) {
-                weatherViewModel.getLocationByGPS(it.first, it.second, units, lang)
-            }
+       // if (NetWorkChecker.getConnectivity(requireContext())!!) {
+            if (location == "MapDone") {
+                weatherViewModel.getLocationByMap(units, lang)
+            } else if (location == "GPS") {
+                var gps = LocationByGps(requireContext())
+                gps.getLastLocation()
+                gps.location.observe(context as LifecycleOwner) {
+                    activity?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)?.edit()?.apply {
+                        putFloat("lat", it.first.toFloat())
+                        putFloat("long", it.second.toFloat())
+                        apply()
 
+                    weatherViewModel.getLocationByGPS(it.first, it.second, units, lang)
+                }
+
+            }
         }
+
+           /* }else{
+            var shared = context?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
+            var latitude = shared?.getFloat("lat",0.0f)?.toDouble()
+            var logitude = shared?.getFloat("long" , 0.0f)?.toDouble()
+            weatherViewModel.getCashedHome(latitude!!,logitude!!)
+            }*/
 
 
     lifecycleScope.launch {

@@ -1,6 +1,7 @@
 package com.example.easyweathy.database
 
 import androidx.room.TypeConverter
+import com.example.easyweathy.model.Alerts
 import com.example.easyweathy.model.Current
 import com.example.easyweathy.model.Daily
 import com.example.easyweathy.model.Weather
@@ -23,6 +24,11 @@ class WeatherConverters {
     fun convertListOfWeatherToJson(listWeather: List<Weather>) = Gson().toJson(listWeather)
     @TypeConverter
     fun convertJsonToListOfWeather(value:String) = Gson().fromJson(value,Array<Weather>::class.java).toList()
+
+    @TypeConverter
+    fun convertListOfAlertToJson(listAlert: List<Alerts>) = Gson().toJson(listAlert)
+    @TypeConverter
+    fun convertJsonToListOfAlert(value:String) = Gson().fromJson(value,Array<Alerts>::class.java).toList()
 
 
 

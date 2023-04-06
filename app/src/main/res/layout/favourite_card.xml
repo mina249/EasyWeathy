@@ -82,36 +82,28 @@
                 app:layout_constraintStart_toEndOf="@+id/tv_fav_degree"
                 app:layout_constraintTop_toTopOf="@+id/tv_fav_degree" />
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardView2"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_marginStart="169dp"
-                android:layout_marginEnd="27dp"
+            <ImageView
+                android:id="@+id/img_fav"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/tv_fav_day"
+                app:layout_constraintHorizontal_bias="0.888"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.153">
-
-                <ImageView
-                    android:id="@+id/imageView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:srcCompat="@tools:sample/avatars" />
-
-            </androidx.cardview.widget.CardView>
+                app:layout_constraintVertical_bias="0.17"
+                tools:srcCompat="@tools:sample/avatars" />
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/delete_lottie"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginStart="284dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.872"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView2"
-                app:layout_constraintVertical_bias="0.377"
+                app:layout_constraintTop_toBottomOf="@+id/img_fav"
+                app:layout_constraintVertical_bias="0.417"
                 app:lottie_autoPlay="false"
                 app:lottie_rawRes="@raw/delete_2" />
 

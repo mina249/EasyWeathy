@@ -4,7 +4,7 @@ import android.content.Context
 import com.example.easyweathy.model.WeatherResponse
 import kotlinx.coroutines.flow.Flow
 
-class ConcreteLocalSource(context: Context):LocalSource {
+class ConcreteLocalSource private constructor(context: Context):LocalSource {
 
     companion object{
         @Volatile
@@ -37,5 +37,9 @@ class ConcreteLocalSource(context: Context):LocalSource {
 
     override suspend fun getSelectedFavouriteWeatherDetails(lat:Double,long:Double): Flow<WeatherResponse> {
       return  weatherDao.getFavDetailsWeather(lat,long)
+    }
+
+    override  fun getCashedHomeWeather(lat: Double, long: Double): Flow<WeatherResponse> {
+      return  weatherDao.getHomeDetailsWeather(lat,long)
     }
 }

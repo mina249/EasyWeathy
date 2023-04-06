@@ -15,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class WeatherViewModel(val repo: GeneralRepo, val context:Context):ViewModel() {
@@ -30,6 +31,8 @@ class WeatherViewModel(val repo: GeneralRepo, val context:Context):ViewModel() {
                 .catch {
                     APIState.Failure(it)
                  }.collect{
+                    it.status = "home"
+                    repo.addWeatherToFavourite(it)
                     weatherResponse.value = APIState.Sucess(it)
                 }
         }
@@ -45,7 +48,20 @@ class WeatherViewModel(val repo: GeneralRepo, val context:Context):ViewModel() {
             getWeatherResponse(latitude!!,logitude!!,units,lang)
         }
 
+    fun getCashedHome(lat: Double,long: Double){
+        viewModelScope.launch {
+            repo.getCashedHomeWeather(lat,long).catch {
+                APIState.Failure(it)
+            }.collect{
+               weatherResponse.value = APIState.Sucess(it)
+            }
+            }
+
+            }
 }
+
+
+
 
 
 

@@ -18,7 +18,7 @@ class ConcreteRepo private constructor(val remoteSource:RemoteSource,val localSo
             }
         }
     }
-    override  fun getWeatherForHomeScreen(
+    override fun getWeatherForHomeScreen(
         lat: Double,
         lon: Double,
         units: String,
@@ -45,5 +45,9 @@ class ConcreteRepo private constructor(val remoteSource:RemoteSource,val localSo
         long: Double
     ): Flow<WeatherResponse> {
         return localSource.getSelectedFavouriteWeatherDetails(lat,long)
+    }
+
+    override  fun getCashedHomeWeather(lat: Double, long: Double): Flow<WeatherResponse> {
+       return localSource.getCashedHomeWeather(lat,long)
     }
 }

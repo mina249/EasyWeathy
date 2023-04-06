@@ -22,6 +22,7 @@ class FavouriteViewModel(val repo:GeneralRepo):ViewModel() {
             viewModelScope.launch(Dispatchers.IO) {
 
                 repo.getWeatherForHomeScreen(lat,long,units,lang).collect{
+                    it.status = "fav"
                     repo.addWeatherToFavourite(it)
                 }
 

@@ -24,12 +24,11 @@ class FavouriteDetailsViewModel(val repo: GeneralRepo ):ViewModel() {
                  repo.getWeatherForHomeScreen(lat,long,units,lang).catch {
                      APIState.Failure(it)
                  }.collect{
+                     it.status = "fav"
                      weatherResponseDetails.value = APIState.Sucess(it)
                      repo.addWeatherToFavourite(it)
                  }
 
-              /*  weatherResponseDetails.postValue(repo.getWeatherForHomeScreen(lat, long,units,lang))
-                 repo.addWeatherToFavourite(repo.getWeatherForHomeScreen(lat, long, units, lang))*/
              }
          }
 

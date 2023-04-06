@@ -18,6 +18,7 @@ import com.example.easyweathy.databinding.FragmentFavouriteBinding
 import com.example.easyweathy.favourite.OnCardFavClickListener
 import com.example.easyweathy.favourite.OnFavouriteDeleteListener
 import com.example.easyweathy.model.WeatherResponse
+import com.example.easyweathy.utilities.Utility
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.logging.Handler
@@ -47,6 +48,8 @@ class FavouriteAdapter(var favList:List<WeatherResponse>,var listener:OnFavourit
         var date = Date(milliSecondDate?.times(1000L) ?: 0)
         val timeZoneDate = SimpleDateFormat("dd  MMM , hh : mm a ")
         var formatedDate = timeZoneDate.format(date)
+        var img = weatherResponse.current?.weather?.get(0)?.icon
+        holder.binding.imgFav.setImageResource(Utility.getImage(img!!))
         holder.binding.tvFavDay.text = formatedDate
         holder.binding.tvCountryFav.text = weatherResponse.timezone
         holder.binding.tvFavDegree.text = weatherResponse.hourly?.get(position)?.temp.toString()

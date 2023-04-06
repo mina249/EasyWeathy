@@ -9,4 +9,5 @@ interface LocalSource {
     suspend fun getFavouriteWeather(): Flow<List<WeatherResponse>>
     suspend fun deleteFavouriteWeather(weatherResponse: WeatherResponse)
     suspend fun getSelectedFavouriteWeatherDetails(lat:Double,long:Double):Flow<WeatherResponse>
+   fun getCashedHomeWeather(lat: Double,long: Double):Flow<WeatherResponse>
 }

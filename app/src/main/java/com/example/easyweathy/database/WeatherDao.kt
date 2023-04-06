@@ -1,6 +1,7 @@
 package com.example.easyweathy.database
 
 import androidx.room.*
+import com.example.easyweathy.alert.view.AlertPojo
 import com.example.easyweathy.model.WeatherResponse
 import kotlinx.coroutines.flow.Flow
 
@@ -20,6 +21,14 @@ interface WeatherDao {
 
     @Query("SELECT * FROM Weather_table WHERE lat LIKE :latitude AND lon LIKE :longtuide AND status = 'home' ")
     fun getHomeDetailsWeather(latitude:Double,longtuide:Double):Flow<WeatherResponse>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+        suspend fun insertAlarm(alert: AlertPojo)
+
+   @Delete
+   suspend fun deleteAlert(alert: AlertPojo)
+   @Query("SELECT * FROM Alert_Table")
+    fun getAllAlerts():Flow<List<AlertPojo>>
 
 
 

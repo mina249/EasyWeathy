@@ -1,9 +1,9 @@
-package com.example.easyweathy.alert
+package com.example.easyweathy.alert.view
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-
+@Entity(tableName = "Alert_Table")
 class AlertPojo(
     var startDate:String,
     var endDate:String,

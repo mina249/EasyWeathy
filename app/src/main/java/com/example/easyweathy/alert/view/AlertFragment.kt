@@ -1,4 +1,4 @@
-package com.example.easyweathy.alert
+package com.example.easyweathy.alert.view
 
 import android.annotation.SuppressLint
 import android.app.*
@@ -13,14 +13,23 @@ import android.view.Window
 import android.widget.Button
 import android.widget.RadioButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.Constraints
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.work.*
 import com.airbnb.lottie.LottieAnimationView
+import com.example.easyweathy.OnAlertDeleteListener
 import com.example.easyweathy.R
+import com.example.easyweathy.alert.viewmodel.AlertViewModel
+import com.example.easyweathy.alert.viewmodel.AlertViewModelFactory
+import com.example.easyweathy.database.ConcreteLocalSource
 import com.example.easyweathy.databinding.FragmentAlarmBinding
-import com.example.easyweathy.home.view.viewmodel.WeatherViewModel
-import com.example.easyweathy.home.view.viewmodel.WeatherViewModelFactory
+import com.example.easyweathy.model.ConcreteRepo
+import com.example.easyweathy.network.ConcreteRemoteSource
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
@@ -32,7 +41,7 @@ import java.util.Calendar
  * Use the [AlertFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class AlertFragment : Fragment(){
+class AlertFragment : Fragment(),OnAlertDeleteListener{
     lateinit var alarmManager: AlarmManager
     lateinit var pendingIntent: PendingIntent
     lateinit var binding: FragmentAlarmBinding
@@ -60,6 +69,11 @@ class AlertFragment : Fragment(){
     var alarmId:Int?=null
     var startMilli:Long=0
     var endMilli:Long=0
+    lateinit var alertViewModel: AlertViewModel
+    lateinit var alertFactory:AlertViewModelFactory
+    var alertadapter: AlertAdapter?=null
+     var alertManger :LayoutManager?=null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,14 +85,16 @@ class AlertFragment : Fragment(){
         actionBar?.setDisplayShowHomeEnabled(true)
         actionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.setTitle(getString(R.string.alert))
+        alertManger = LinearLayoutManager(context)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.fabAlert.setOnClickListener(){
-            showAlertDialoge()
-        }
+
+
+
+
     }
    @SuppressLint("WrongConstant")
    private fun createNotificationChannel(id:Int){
@@ -95,12 +111,13 @@ class AlertFragment : Fragment(){
 
     private fun setAlarm(start:Long,id:Int){
         alarmManager = activity?.getSystemService(ALARM_SERVICE) as AlarmManager
-        val intent = Intent(requireContext(),WeatherReciever::class.java)
+        val intent = Intent(requireContext(), WeatherReciever::class.java)
         intent.putExtra("id",id)
         pendingIntent = PendingIntent.getBroadcast(requireContext(),id,intent,0)
         alarmManager.setExact(AlarmManager.RTC_WAKEUP,start,pendingIntent)
 
     }
+    @SuppressLint("NotifyDataSetChanged")
     private fun showAlertDialoge(){
         var dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -138,10 +155,16 @@ class AlertFragment : Fragment(){
             var id = createAlertId(startDate.text.toString(),endDate.text.toString(),alertType)
             var alert = AlertPojo(startDate.text.toString(),endDate.text.toString(), alertType,id)
             startMilli = startCalender.timeInMillis
-            createNotificationChannel(id)
-            setAlarm(startMilli,id)
-            dialog.dismiss()
 
+            if(startCalender.time > endCalendar.time){
+                Toast.makeText(context,"invalid date ",Toast.LENGTH_SHORT)
+            }else {
+                createNotificationChannel(id)
+                setAlarm(startMilli, id)
+                alertViewModel.addAlert(alert)
+                alertadapter?.notifyDataSetChanged()
+                dialog.dismiss()
+            }
         }
     }
     @SuppressLint("SimpleDateFormat")
@@ -202,5 +225,34 @@ class AlertFragment : Fragment(){
         val hash = digest.digest(input.toByteArray(StandardCharsets.UTF_8))
         val truncatedHash = hash.copyOfRange(0, 4)
         return truncatedHash.fold(0) { acc, byte -> (acc shl 8) + (byte.toInt() and 0xff) }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        alertFactory = AlertViewModelFactory(
+            ConcreteRepo.getInstance(
+                ConcreteRemoteSource,
+                ConcreteLocalSource.getInstance(requireContext())
+            ),
+
+            )
+        alertViewModel = ViewModelProvider(requireActivity(), alertFactory).get(AlertViewModel::class.java)
+        binding.fabAlert.setOnClickListener(){
+            showAlertDialoge()
+        }
+
+        alertViewModel.getAlerts()
+        alertViewModel._alertList.observe(viewLifecycleOwner){
+            alertadapter = AlertAdapter(it,this,requireContext())
+
+            binding.rvAlert.apply {
+                adapter =alertadapter
+                layoutManager = alertManger
+            }
+        }
+    }
+
+    override fun onAlertDeleteListener(alert: AlertPojo) {
+        alertViewModel.deleteAlert(alert)
     }
 }

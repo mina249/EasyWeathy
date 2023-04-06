@@ -1,36 +1,23 @@
-package com.example.easyweathy.alert
+package com.example.easyweathy.alert.view
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.Notification
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.util.Log
+import android.media.MediaPlayer
+import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.example.easyweathy.R
 import com.example.easyweathy.database.ConcreteLocalSource
-import com.example.easyweathy.database.LocalSource
-import com.example.easyweathy.home.view.viewmodel.WeatherViewModel
-import com.example.easyweathy.home.view.viewmodel.WeatherViewModelFactory
 import com.example.easyweathy.model.ConcreteRepo
-import com.example.easyweathy.model.GeneralRepo
 import com.example.easyweathy.model.WeatherResponse
 import com.example.easyweathy.network.ConcreteRemoteSource
-import com.example.easyweathy.network.RemoteSource
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 
 class WeatherReciever():BroadcastReceiver() {
     lateinit var weatherResponse: WeatherResponse
@@ -53,7 +40,6 @@ class WeatherReciever():BroadcastReceiver() {
                 val builder = NotificationCompat.Builder(context, id.toString())
                     .setSmallIcon(R.drawable.app_logo)
                     .setContentTitle(weatherResponse.timezone)
-
                     .setAutoCancel(true)
                     .setDefaults(NotificationCompat.DEFAULT_ALL)
                     .setPriority(NotificationCompat.PRIORITY_MAX)
@@ -64,7 +50,7 @@ class WeatherReciever():BroadcastReceiver() {
                     builder.setContentText("The weather To day is very good ,Have a nice day")
                 }
                 val notificationManger = NotificationManagerCompat.from(context)
-
+                    var mp = MediaPlayer.create(context, Settings.System.DEFAULT_ALARM_ALERT_URI).start()
                 if (ActivityCompat.checkSelfPermission(
                         context,
                         Manifest.permission.POST_NOTIFICATIONS

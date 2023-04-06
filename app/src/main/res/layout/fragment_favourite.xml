@@ -16,8 +16,6 @@
         android:background="@drawable/fab"
         android:clickable="true"
         android:src="@drawable/add"
-
-
         app:backgroundTintMode="add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

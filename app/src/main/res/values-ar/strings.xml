@@ -36,5 +36,11 @@
     <string name="alert_type">نوع التنييه</string>
     <string name="notification">اشعار</string>
     <string name="alert_sett">منبه</string>
+    <string name="start_date">تاريخ البداية</string>
+    <string name="end_date">تاريخ الانتهاء</string>
+    <string name="from">من</string>
+    <string name="to">الي</string>
+    <string name="save_dialog">حفظ</string>
+    <string name="alert_delete">هل أنت متأكد،انك تريد حذف هذا التنبيه  من قائمة التنبيهات ؟</string>
 
 </resources>

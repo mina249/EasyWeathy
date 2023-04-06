@@ -49,7 +49,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"></activity>
-        <receiver android:name=".alert.WeatherReciever"/>
+        <receiver android:name=".alert.view.WeatherReciever"/>
     </application>
 
 </manifest>

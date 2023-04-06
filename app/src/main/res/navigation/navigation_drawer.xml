@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/alertFragment"
-        android:name="com.example.easyweathy.alert.AlertFragment"
+        android:name="com.example.easyweathy.alert.view.AlertFragment"
         android:label="fragment_alarm"
         tools:layout="@layout/fragment_alarm" />
     <fragment

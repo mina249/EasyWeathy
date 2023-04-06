@@ -1,5 +1,6 @@
 package com.example.easyweathy.favourite.view
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -55,31 +56,7 @@ class FavouriteAdapter(var favList:List<WeatherResponse>,var listener:OnFavourit
         holder.binding.tvFavDegree.text = weatherResponse.hourly?.get(position)?.temp.toString()
         holder.binding.tvFavStatus.text = weatherResponse.current?.weather?.get(0)?.description
         holder.binding.deleteLottie.setOnClickListener() {
-            var dialog = Dialog(context)
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            dialog.setContentView(R.layout.delete_from_favourite)
-            val window: Window? = dialog.getWindow()
-            window?.setLayout(
-                Constraints.LayoutParams.MATCH_PARENT,
-                Constraints.LayoutParams.WRAP_CONTENT
-            )
-            dialog.setCanceledOnTouchOutside(false)
-            dialog.show()
-
-
-            dialog.findViewById<Button>(R.id.btn_delete_fav).setOnClickListener {
-                dialog.dismiss()
-               holder.binding.deleteLottie.playAnimation()
-                android.os.Handler().postDelayed({
-                    listener.deleteWeatherFromFavourite(favList[position])
-                }, 2500)
-
-
-            }
-            dialog.findViewById<Button>(R.id.btn_cancel_fav).setOnClickListener() {
-                dialog.dismiss()
-            }
-
+            dialogDeleteConfirmation(position,holder)
         }
             var lat = weatherResponse.lat
             var long = weatherResponse.lon
@@ -90,8 +67,40 @@ class FavouriteAdapter(var favList:List<WeatherResponse>,var listener:OnFavourit
     }
     inner class FavouriteHolder(var binding: FavouriteCardBinding) :
         ViewHolder(binding.root)
-    /*fun dialogDeleteConfirmation() {
-    }*/
+    @SuppressLint("SuspiciousIndentation")
+    fun dialogDeleteConfirmation(position:Int, holder:FavouriteHolder) {
+      var dialog = Dialog(context)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setContentView(R.layout.delete_from_favourite)
+            val window: Window? = dialog.getWindow()
+            window?.setLayout(
+                Constraints.LayoutParams.MATCH_PARENT,
+                Constraints.LayoutParams.WRAP_CONTENT
+
+            )
+        window?.setBackgroundDrawableResource(R.color.transparent);
+            dialog.setCanceledOnTouchOutside(false)
+            dialog.show()
+
+
+            dialog.findViewById<Button>(R.id.btn_delete_fav).setOnClickListener {
+                dialog.dismiss()
+               holder.binding.deleteLottie.playAnimation()
+                android.os.Handler().postDelayed({
+                    holder.binding.favCard.animate().translationX(-1400f).setDuration(500)
+                },2500)
+                android.os.Handler().postDelayed({
+                    listener.deleteWeatherFromFavourite(favList[position])
+                }, 3000)
+
+
+            }
+            dialog.findViewById<Button>(R.id.btn_cancel_fav).setOnClickListener() {
+                dialog.dismiss()
+            }
+
+
+    }
 }
 
 

@@ -1,6 +1,7 @@
 package com.example.easyweathy.database
 
 import android.content.Context
+import com.example.easyweathy.alert.view.AlertPojo
 import com.example.easyweathy.model.WeatherResponse
 import kotlinx.coroutines.flow.Flow
 
@@ -41,5 +42,17 @@ class ConcreteLocalSource private constructor(context: Context):LocalSource {
 
     override  fun getCashedHomeWeather(lat: Double, long: Double): Flow<WeatherResponse> {
       return  weatherDao.getHomeDetailsWeather(lat,long)
+    }
+
+    override suspend fun addAlert(alertPojo: AlertPojo) {
+        weatherDao.insertAlarm(alertPojo)
+    }
+
+    override suspend fun removeAlert(alertPojo: AlertPojo) {
+     weatherDao.deleteAlert(alertPojo)
+    }
+
+    override suspend fun getAllAlerts(): Flow<List<AlertPojo>> {
+       return weatherDao.getAllAlerts()
     }
 }

@@ -3,64 +3,54 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    app:cardBackgroundColor="@color/transparent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/alert_dialoge_background">
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/location_sett"
-            android:textColor="@color/background"
+            android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/rg_location_dialogue"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.138"
+            app:layout_constraintHorizontal_bias="0.12"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.111" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Alert Type"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/rg_alert_dialogue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.097"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/rg_alert_dialogue" />
+            app:layout_constraintTop_toTopOf="@+id/rg_location_dialogue"
+            app:layout_constraintVertical_bias="0.476" />
 
         <Button
             android:id="@+id/btn_submit_dialogue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="44dp"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="#5C70DF"
             android:text="Submit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.465"
+            app:layout_constraintHorizontal_bias="0.471"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rg_alert_dialogue"
-            app:layout_constraintVertical_bias="0.715" />
+            app:layout_constraintTop_toBottomOf="@+id/rg_location_dialogue" />
 
         <RadioGroup
             android:id="@+id/rg_location_dialogue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="120dp"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.783"
+            app:layout_constraintHorizontal_bias="0.824"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.125">
+            app:layout_constraintTop_toTopOf="parent">
 
             <RadioButton
                 android:id="@+id/rb_gps_dialogue"
@@ -69,6 +59,7 @@
                 android:layout_marginLeft="20dp"
                 android:background="@drawable/radio_button_selector"
                 android:button="@android:color/transparent"
+                android:checked="true"
                 android:elevation="10dp"
                 android:gravity="center"
                 android:padding="10dp"
@@ -91,45 +82,39 @@
                 tools:layout_editor_absoluteY="129dp" />
         </RadioGroup>
 
-        <RadioGroup
-            android:id="@+id/rg_alert_dialogue"
+        <TextView
+            android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="144dp"
-            android:orientation="horizontal"
+            android:layout_marginEnd="72dp"
+            android:text="Initial Setup"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="bold|italic"
+            app:layout_constraintBottom_toBottomOf="@+id/cardView3"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.82"
+            app:layout_constraintTop_toTopOf="@+id/cardView3"
+            app:layout_constraintVertical_bias="0.35" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.054"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.068">
 
-            <RadioButton
-                android:id="@+id/rb_not_dialogue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:background="@drawable/radio_button_selector"
-                android:button="@android:color/transparent"
-                android:elevation="10dp"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="Notification"
-                tools:layout_editor_absoluteX="177dp"
-                tools:layout_editor_absoluteY="129dp" />
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:srcCompat="@drawable/location_sett" />
+        </androidx.cardview.widget.CardView>
 
-            <RadioButton
-                android:id="@+id/rb_alert_dialogue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
-                android:background="@drawable/radio_button_selector"
-                android:button="@android:color/transparent"
-                android:elevation="10dp"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="Alert"
-                tools:layout_editor_absoluteX="177dp"
-                tools:layout_editor_absoluteY="129dp" />
-        </RadioGroup>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

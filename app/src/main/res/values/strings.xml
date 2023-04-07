@@ -43,5 +43,15 @@
     <string name="to">To</string>
     <string name="save_dialog">Save</string>
     <string name="alert_delete">Are You Sure , You want to Delete this weather alert from your alerts list ?</string>
-
+    <string name="dismiss">Dismiss</string>
+    <string name="enable">Enable</string>
+    <string name="disable">Disable</string>
+    <string name="rain">Rain</string>
+    <string-array name="myAlerts">
+        <item>Rain</item>
+        <item>Storm</item>
+        <item>Volcano</item>
+        <item>Earthquake</item>
+        <item>Tornado</item>
+    </string-array>
 </resources>

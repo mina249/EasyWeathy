@@ -8,9 +8,14 @@ class AlertPojo(
     var startDate:String,
     var endDate:String,
     var AlertType:String="Alert",
+    var lat:Double,
+    var longitude:Double,
+    var alertDescription:String="Rain",
     @PrimaryKey
-    var id:Int
+    var id:Int,
 
-) {
+
+
+):java.io.Serializable {
 
 }

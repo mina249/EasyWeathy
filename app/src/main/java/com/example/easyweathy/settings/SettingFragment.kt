@@ -24,7 +24,7 @@ import java.util.Locale
 class SettingFragment : Fragment() {
 
     lateinit var binding: FragmentSettingBinding
-     var shared:SharedPreferences?=null
+    var shared: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +38,7 @@ class SettingFragment : Fragment() {
     ): View? {
 
         binding = FragmentSettingBinding.inflate(inflater, container, false)
-         shared = activity?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
+        shared = activity?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
         var location = shared?.getString("location", "")!!
         if (location == "MapDone") {
             binding.rbMap.isChecked = true
@@ -69,6 +69,8 @@ class SettingFragment : Fragment() {
         onFerhenhiteSelect()
         onKilvenSelect()
         getRadioButtonChecked()
+        onDisAbleNotificationSelect()
+        onEnableNotificationSelect()
 
     }
 
@@ -82,50 +84,51 @@ class SettingFragment : Fragment() {
                 }
         }
     }
-       @SuppressLint("SuspiciousIndentation")
-       fun onGpsSelect() {
-            if(!binding.rbGps.isChecked)
+
+    @SuppressLint("SuspiciousIndentation")
+    fun onGpsSelect() {
+        if (!binding.rbGps.isChecked)
             binding.rbGps.setOnClickListener() {
                 requireActivity().getSharedPreferences(
                     "appPrefrence",
                     AppCompatActivity.MODE_PRIVATE
                 )?.edit()?.apply {
-                    putString("location","GPS")
+                    putString("location", "GPS")
                     apply()
                     Navigation.findNavController(requireView()).navigate(R.id.setting_to_home)
 
                 }
             }
-        }
-
-
-        fun onMeterSelect() {
-            binding.rbMeterSec.setOnClickListener() {
-                requireActivity().getSharedPreferences(
-                    "appPrefrence",
-                    AppCompatActivity.MODE_PRIVATE
-                )
-                    ?.edit()?.apply {
-                        putString("Units","metric")
-                        apply()
-                    }
-                binding.rbCelesius.isChecked = true
-            }
-        }
-
-    fun onMileSelect(){
-    binding.rbMileHour.setOnClickListener() {
-        requireActivity().getSharedPreferences(
-            "appPrefrence",
-            AppCompatActivity.MODE_PRIVATE
-        )?.edit()?.apply {
-            putString("Units","imperial")
-            apply()
-        }
-        binding.rbFerhenhite.isChecked = true
     }
 
-}
+
+    fun onMeterSelect() {
+        binding.rbMeterSec.setOnClickListener() {
+            requireActivity().getSharedPreferences(
+                "appPrefrence",
+                AppCompatActivity.MODE_PRIVATE
+            )
+                ?.edit()?.apply {
+                    putString("Units", "metric")
+                    apply()
+                }
+            binding.rbCelesius.isChecked = true
+        }
+    }
+
+    fun onMileSelect() {
+        binding.rbMileHour.setOnClickListener() {
+            requireActivity().getSharedPreferences(
+                "appPrefrence",
+                AppCompatActivity.MODE_PRIVATE
+            )?.edit()?.apply {
+                putString("Units", "imperial")
+                apply()
+            }
+            binding.rbFerhenhite.isChecked = true
+        }
+
+    }
 
     fun onCelesisSelect() {
         binding.rbCelesius.setOnClickListener() {
@@ -133,39 +136,39 @@ class SettingFragment : Fragment() {
                 "appPrefrence",
                 AppCompatActivity.MODE_PRIVATE
             )?.edit()?.apply {
-                putString("Units","metric")
+                putString("Units", "metric")
                 apply()
             }
             binding.rbMeterSec.isChecked = true
         }
     }
 
-    fun onKilvenSelect(){
-        binding.rbKelvin.setOnClickListener(){
-    requireActivity().getSharedPreferences(
-        "appPrefrence",
-        AppCompatActivity.MODE_PRIVATE
-    )?.edit()?.apply {
-        putString("Units","standard")
-        apply()
-        }
-        }
-    }
-
-    fun onFerhenhiteSelect(){
-        binding.rbFerhenhite.setOnClickListener(){
+    fun onKilvenSelect() {
+        binding.rbKelvin.setOnClickListener() {
             requireActivity().getSharedPreferences(
                 "appPrefrence",
                 AppCompatActivity.MODE_PRIVATE
             )?.edit()?.apply {
-                putString("Units","imperial")
+                putString("Units", "standard")
+                apply()
+            }
+        }
+    }
+
+    fun onFerhenhiteSelect() {
+        binding.rbFerhenhite.setOnClickListener() {
+            requireActivity().getSharedPreferences(
+                "appPrefrence",
+                AppCompatActivity.MODE_PRIVATE
+            )?.edit()?.apply {
+                putString("Units", "imperial")
                 apply()
 
             }
             binding.rbMileHour.isChecked = true
         }
 
-        }
+    }
 
 
     fun onArabicSelect() {
@@ -176,7 +179,7 @@ class SettingFragment : Fragment() {
                 "appPrefrence",
                 AppCompatActivity.MODE_PRIVATE
             )?.edit()?.apply {
-                putString("Language","ar")
+                putString("Language", "ar")
                 apply()
 
             }
@@ -185,56 +188,90 @@ class SettingFragment : Fragment() {
         }
     }
 
-   fun onEnglishSelect(){
-       binding.rbEnglish.setOnClickListener(){
+    fun onEnglishSelect() {
+        binding.rbEnglish.setOnClickListener() {
 
 
-        requireActivity().getSharedPreferences(
-            "appPrefrence",
-            AppCompatActivity.MODE_PRIVATE
-        )?.edit()?.apply {
-            putString("Language","en")
-            apply()
+            requireActivity().getSharedPreferences(
+                "appPrefrence",
+                AppCompatActivity.MODE_PRIVATE
+            )?.edit()?.apply {
+                putString("Language", "en")
+                apply()
+            }
+            setLocale("en")
+
         }
-           setLocale("en")
 
     }
 
-}
-    fun setLocale(lang:String){
+    fun setLocale(lang: String) {
         var locale = Locale(lang)
         Locale.setDefault(locale)
         var configuration = Configuration()
         configuration.setLocale(locale)
-        context?.resources?.updateConfiguration(configuration,context?.resources?.displayMetrics)
+        context?.resources?.updateConfiguration(configuration, context?.resources?.displayMetrics)
         activity?.recreate()
     }
 
 
-    fun getRadioButtonChecked(){
+    fun getRadioButtonChecked() {
         shared = activity?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
         var units = shared?.getString("Units", "")
         var lang = shared?.getString("Language", "")
-        if (units == "metric"){
+        if (units == "metric") {
             binding.rbCelesius.isChecked = true
             binding.rbMeterSec.isChecked = true
-        }else if(units == "standard"){
+        } else if (units == "standard") {
             binding.rbKelvin.isChecked = true
 
-        }else if(units == "imperial"){
+        } else if (units == "imperial") {
             binding.rbFerhenhite.isChecked = true
             binding.rbMileHour.isChecked = true
-        }else{}
+        } else {
+        }
 
-        if(lang == "en"){
+        if (lang == "en") {
             binding.rbEnglish.isChecked = true
-        }else if(lang == "ar"){
+        } else if (lang == "ar") {
             binding.rbArabic.isChecked = true
-        }else{
+        } else {
 
         }
 
     }
+
+    fun onEnableNotificationSelect() {
+        binding.rbEnable.setOnClickListener() {
+
+
+            requireActivity().getSharedPreferences(
+                "appPrefrence",
+                AppCompatActivity.MODE_PRIVATE
+            )?.edit()?.apply {
+                putString("isAlert", "yes")
+                apply()
+            }
+
+
+        }
+
+    }
+    fun onDisAbleNotificationSelect() {
+        binding.rbDisable.setOnClickListener() {
+            requireActivity().getSharedPreferences(
+                "appPrefrence",
+                AppCompatActivity.MODE_PRIVATE
+            )?.edit()?.apply {
+                putString("isAlert", "no")
+                apply()
+            }
+
+
+        }
+
+    }
+
 
 }
 

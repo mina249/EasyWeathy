@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
@@ -50,6 +52,7 @@
             android:name=".MainActivity"
             android:exported="true"></activity>
         <receiver android:name=".alert.view.WeatherReciever"/>
+        <receiver android:name=".alert.view.DeleteNotificationReciever"/>
     </application>
 
 </manifest>

@@ -50,7 +50,7 @@ class SplashActivity : AppCompatActivity() {
     fun startDialogConfirmation() {
         var dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.choose_location_dialogue)
+        dialog.setContentView(R.layout.starting_dialoge)
         val window: Window? = dialog.getWindow()
         window?.setBackgroundDrawableResource(R.color.transparent);
         window?.setLayout(

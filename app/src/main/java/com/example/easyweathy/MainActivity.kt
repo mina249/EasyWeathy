@@ -1,11 +1,11 @@
 package com.example.easyweathy
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.res.Configuration
+import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.provider.Settings
 import android.view.MenuItem
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -14,8 +14,6 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.example.easyweathy.databinding.ActivityMainBinding
-import com.example.easyweathy.favourite.view.FavouriteFragment
-import com.example.easyweathy.favourite.view.favourite_details.DetailsFavourite
 import com.google.android.material.navigation.NavigationView
 import java.util.*
 

@@ -47,6 +47,11 @@ class AlertAdapter(var alertList:List<AlertPojo>,var listener: OnAlertDeleteList
         holder.binding.alertDelete.setOnClickListener(){
             dialogDeleteConfirmation(position,holder)
         }
+        if(alert.AlertType == "Alert"){
+            holder.binding.imgAlertRv.setImageResource(R.drawable.alarm)
+        }else{
+            holder.binding.imgAlertRv.setImageResource(R.drawable.chat)
+        }
 
     }
     inner class AlertHolder(val binding:AlertRvBinding):ViewHolder(binding.root)

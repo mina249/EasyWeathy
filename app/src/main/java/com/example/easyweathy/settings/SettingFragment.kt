@@ -18,6 +18,8 @@ import com.airbnb.lottie.LottieAnimationView
 import com.example.easyweathy.R
 import com.example.easyweathy.databinding.FragmentSettingBinding
 import com.example.easyweathy.home.view.HomeFragmentDirections
+import com.example.easyweathy.network.NetWorkChecker
+import com.example.easyweathy.utilities.Utility
 import java.util.Locale
 
 
@@ -76,12 +78,19 @@ class SettingFragment : Fragment() {
 
     private fun onMapSelect() {
         binding.rbMap.setOnClickListener() {
-            requireActivity().getSharedPreferences("appPrefrence", AppCompatActivity.MODE_PRIVATE)
-                ?.edit()?.apply {
-                    putString("location", "Map")
-                    apply()
-                    Navigation.findNavController(requireView()).navigate(R.id.setting_to_home)
-                }
+            if(NetWorkChecker.getConnectivity(requireContext())!!) {
+                requireActivity().getSharedPreferences(
+                    "appPrefrence",
+                    AppCompatActivity.MODE_PRIVATE
+                )
+                    ?.edit()?.apply {
+                        putString("location", "Map")
+                        apply()
+                        Navigation.findNavController(requireView()).navigate(R.id.setting_to_home)
+                    }
+            }else{
+                Utility.noInternetDialog(requireContext())
+            }
         }
     }
 

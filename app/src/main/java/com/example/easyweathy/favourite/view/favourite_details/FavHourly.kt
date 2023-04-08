@@ -97,7 +97,7 @@ class FavHourly : Fragment() {
                 when (result) {
                     is APIState.Sucess -> {
                         weatherResponse = result.weatherResponse
-                        hourlyAdapter = HourlyFavDetailsAdapter(weatherResponse.hourly!!)
+                        hourlyAdapter = HourlyFavDetailsAdapter(weatherResponse.hourly!!,requireContext())
                         hourlyManger =
                             LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
                         binding.rvHourlyFav.apply {

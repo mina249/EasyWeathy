@@ -145,21 +145,21 @@ class DetailsFavourite : Fragment() {
     }
 
     private fun setHomeData(){
-        binding.tvHomeCountryDetails.text = weatherResponse.timezone
+        binding.tvHomeCountryDetails.text = Utility.getAdressName(weatherResponse.lat,weatherResponse.lon,requireContext())
         var milliSecondDate = weatherResponse.current?.dt
         Log.i("time", milliSecondDate.toString())
         var date = Date(milliSecondDate?.times(1000L) ?: 0)
         val timeZoneDate = SimpleDateFormat("dd  MMM , hh : mm a ")
         var formatedDate = timeZoneDate.format(date)
         binding.tvHomeDateDetails.text = formatedDate
-        binding.tvHomeTempDetails.text = weatherResponse.current?.temp.toString()
+        binding.tvHomeTempDetails.text = weatherResponse.current?.temp.toString()+Utility.getUnits(requireContext())[1]
         val image = Utility.getImage(weatherResponse?.current?.weather?.get(0)?.icon!!)
         binding.imgHomeWeatherDetails.setImageResource(image)
         binding.tvHomeDesDetails.text = weatherResponse.current?.weather?.get(0)?.description
         binding.tvHomeCloudDetails.text = weatherResponse.current?.clouds.toString()
         binding.tvHomeHumidityDetails.text = weatherResponse.current?.humidity.toString()
         binding.tvHomePressDetails.text = weatherResponse.current?.pressure.toString()
-        binding.tvHomeWindDetails.text = weatherResponse.current?.wind_speed.toString()
+        binding.tvHomeWindDetails.text = weatherResponse.current?.wind_speed.toString()+Utility.getUnits(requireContext())[0]
         binding.tvHomeVisiblityDetails.text = weatherResponse.current?.visibility.toString()
         binding.tvHomeUltraDetails.text = weatherResponse.current?.uvi.toString()
 

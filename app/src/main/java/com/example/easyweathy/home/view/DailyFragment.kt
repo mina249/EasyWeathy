@@ -1,7 +1,9 @@
 package com.example.easyweathy.home.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +23,7 @@ import com.example.easyweathy.network.ConcreteRemoteSource
 import com.example.easyweathy.network.NetWorkChecker
 import com.example.easyweathy.utilities.APIState
 import com.example.easyweathy.utilities.LocationByGps
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -50,12 +53,7 @@ class DailyFragment() : Fragment() {
 
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
-    }
-
+    @SuppressLint("SuspiciousIndentation")
     override fun onResume() {
         super.onResume()
 
@@ -70,8 +68,8 @@ class DailyFragment() : Fragment() {
             ViewModelProvider(requireActivity(), weatherFactory).get(WeatherViewModel::class.java)
         var shared = context?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
         var lang = shared?.getString("Language", "en")!!
-        var units = shared?.getString("Units", "")!!
-       // if (NetWorkChecker.getConnectivity(requireContext())!!) {
+        var units = shared?.getString("Units", "standard")!!
+
             if (location == "MapDone") {
                 weatherViewModel.getLocationByMap(units, lang)
             } else if (location == "GPS") {
@@ -81,26 +79,34 @@ class DailyFragment() : Fragment() {
                     weatherViewModel.getLocationByGPS(it.first, it.second, units, lang)
                 }
             }
-       /* } else{
-            var shared = context?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
-            var latitude = shared?.getFloat("lat",0.0f)?.toDouble()
-            var logitude = shared?.getFloat("long" , 0.0f)?.toDouble()
-            weatherViewModel.getCashedHome(latitude!!,logitude!!)
-        }*/
 
         lifecycleScope.launch {
             weatherViewModel.response.collectLatest() {result->
 
                 when(result){
-                    is APIState.Sucess->{
+                    is APIState.Sucess-> {
                         weatherResponse = result.weatherResponse
-                            dailyAdapter = DailyAdapter(weatherResponse)
+                        dailyAdapter = DailyAdapter(weatherResponse, requireContext())
                         dailyManger = LinearLayoutManager(requireContext())
                         binding.rvDaily.apply {
                             adapter = dailyAdapter
                             layoutManager = dailyManger
+                        }
+                    }
+                    is APIState.Failure->{
+                        var cash = Gson().fromJson( shared.getString("cashedHome",""),WeatherResponse::class.java)
+                        if(shared.contains("cashedHome")){
+                            weatherResponse = cash
+                            dailyAdapter = DailyAdapter(weatherResponse, requireContext())
+                            dailyManger = LinearLayoutManager(requireContext())
+                            binding.rvDaily.apply {
+                                adapter = dailyAdapter
+                                layoutManager = dailyManger
+                                Log.i("daily",cash.timezone)
+                            }
 
                         }
+
                     }else -> {}
 
                 }

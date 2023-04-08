@@ -17,6 +17,7 @@ import com.example.easyweathy.OnAlertDeleteListener
 import com.example.easyweathy.R
 import com.example.easyweathy.databinding.AlertRvBinding
 import com.example.easyweathy.favourite.view.FavouriteAdapter
+import com.example.easyweathy.utilities.Utility
 
 
 class AlertAdapter(var alertList:List<AlertPojo>,var listener: OnAlertDeleteListener,var context: Context):RecyclerView.Adapter<AlertAdapter.AlertHolder>() {
@@ -52,6 +53,9 @@ class AlertAdapter(var alertList:List<AlertPojo>,var listener: OnAlertDeleteList
         }else{
             holder.binding.imgAlertRv.setImageResource(R.drawable.chat)
         }
+      holder. binding.alertRvCountry.text = Utility.getAdressName(alert.lat,alert.longitude,context)
+        holder.binding.alertTypeTv.text = alert.alertDescription
+
 
     }
     inner class AlertHolder(val binding:AlertRvBinding):ViewHolder(binding.root)

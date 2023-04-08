@@ -14,7 +14,7 @@ import com.example.easyweathy.utilities.Utility
 import java.text.SimpleDateFormat
 import java.util.*
 
-class HourlyFavDetailsAdapter(var hourly:List<Current>):
+class HourlyFavDetailsAdapter(var hourly:List<Current>,var context: Context):
     RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     var bindingFavWeather:HourlyFavDetailsTwoBinding?=null
     var bindingFavWeatherDet:HourlyFavDetailsBinding?=null
@@ -44,11 +44,11 @@ class HourlyFavDetailsAdapter(var hourly:List<Current>):
         if(holder is HourlyFavHolder2){
             holder.binding2.imgHourlyDetails.setImageResource(image)
             holder.binding2?.tvHoursHourlyDetails?.text = formatedHour
-            holder.binding2?.tvDegreeHourlyDetails?.text =hourly[position].temp.toString()
+            holder.binding2?.tvDegreeHourlyDetails?.text =hourly[position].temp.toString()+Utility.getUnits(context)[1]
         }else if(holder is HourlyFavHolder){
             holder.binding?.tvHoursDailyDet ?.text = formatedHour
             holder.binding?.imgDailyHourDet?.setImageResource(image)
-            holder.binding?.tvHourlyDegreeDet?.text = hourly[position].temp.toString()
+            holder.binding?.tvHourlyDegreeDet?.text = hourly[position].temp.toString()+Utility.getUnits(context)[1]
         }
     }
     override fun getItemViewType(position: Int): Int {

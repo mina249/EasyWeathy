@@ -93,7 +93,7 @@ class FavDaily : Fragment() {
             detailsViewModel.responseDetails.collectLatest {result->
                 when(result){
                     is APIState.Sucess->{
-                        dailyAdapter = DailyFavouriteAdapter(result.weatherResponse)
+                        dailyAdapter = DailyFavouriteAdapter(result.weatherResponse,requireContext())
                         dailyManger = LinearLayoutManager(requireContext())
                         binding.rvDailyFav.apply {
                             adapter = dailyAdapter

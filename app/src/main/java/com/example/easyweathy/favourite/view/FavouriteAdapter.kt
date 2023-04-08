@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
 import androidx.constraintlayout.widget.Constraints
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -52,7 +53,12 @@ class FavouriteAdapter(var favList:List<WeatherResponse>,var listener:OnFavourit
         var img = weatherResponse.current?.weather?.get(0)?.icon
         holder.binding.imgFav.setImageResource(Utility.getImage(img!!))
         holder.binding.tvFavDay.text = formatedDate
-        holder.binding.tvCountryFav.text = weatherResponse.timezone
+        var countryName = Utility.getAdressName(weatherResponse.lat,weatherResponse.lon,context)
+        if(countryName.equals("invalid")){
+         holder.binding.tvCountryFav.text = weatherResponse.timezone
+        }else{
+          holder.binding.tvCountryFav.text = countryName
+        }
         holder.binding.tvFavDegree.text = weatherResponse.hourly?.get(position)?.temp.toString()
         holder.binding.tvFavStatus.text = weatherResponse.current?.weather?.get(0)?.description
         holder.binding.deleteLottie.setOnClickListener() {

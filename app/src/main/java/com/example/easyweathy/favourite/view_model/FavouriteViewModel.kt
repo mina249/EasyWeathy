@@ -35,25 +35,12 @@ class FavouriteViewModel(val repo:GeneralRepo):ViewModel() {
             }
         }
 
-
-
     fun getAllFavWeather(){
         viewModelScope.launch (Dispatchers.IO) {
             repo.getFavouriteWeather().collect {
                 favouriteWeatherList.postValue(it)
 
             }
-
-
-
-
         }
     }
-  /*  suspend fun getWeatherFromApi(lat:Double, long:Double):WeatherResponse{
-        return repo.getWeatherForHomeScreen(lat,long,"metric","en")
-
-    }*/
-
-
-
 }

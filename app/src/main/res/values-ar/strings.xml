@@ -42,5 +42,7 @@
     <string name="to">الي</string>
     <string name="save_dialog">حفظ</string>
     <string name="alert_delete">هل أنت متأكد،انك تريد حذف هذا التنبيه  من قائمة التنبيهات ؟</string>
+    <string name="last_data">هذه بياناتك الأخيرة للحصول على أحدث البيانات ، يرجى التحقق من اتصال الشبكة</string>
+
 
 </resources>

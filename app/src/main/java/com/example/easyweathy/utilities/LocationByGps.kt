@@ -79,7 +79,7 @@ class LocationByGps constructor(var context: Context){
             val lastLocation: Location = locationResult.lastLocation
             Log.i("mina",lastLocation.latitude.toString())
             mutableLocation.postValue(Pair(lastLocation.latitude,lastLocation.longitude))
-           // stopLocationUpdate()
+            stopLocationUpdate()
 
 
 

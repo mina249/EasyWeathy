@@ -1,6 +1,7 @@
 package com.example.easyweathy.home.view
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Context
 
 import android.content.Context.MODE_PRIVATE
@@ -9,7 +10,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.Button
 import android.widget.Toast
+import androidx.constraintlayout.widget.Constraints
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
@@ -28,7 +32,9 @@ import com.example.easyweathy.network.NetWorkChecker
 import com.example.easyweathy.utilities.APIState
 import com.example.easyweathy.utilities.LocationByGps
 import com.example.easyweathy.utilities.Utility
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -50,6 +56,7 @@ class HomeFragment : Fragment() {
    lateinit var location:String
    lateinit var units:String
    lateinit var lang:String
+   lateinit var dialog:Dialog
 
    override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -103,10 +110,10 @@ class HomeFragment : Fragment() {
 
 
     }
-    @SuppressLint("SimpleDateFormat", "SuspiciousIndentation")
+    @SuppressLint("SimpleDateFormat", "SuspiciousIndentation", "CommitPrefEdits")
     override fun onResume() {
         super.onResume()
-
+        noInternetDialog()
         weatherFactory = WeatherViewModelFactory(
             ConcreteRepo.getInstance(
                 ConcreteRemoteSource,
@@ -119,12 +126,12 @@ class HomeFragment : Fragment() {
         var shared = activity?.getSharedPreferences("appPrefrence", MODE_PRIVATE)
         location = shared?.getString("location", "")!!
         lang = shared?.getString("Language", "en")!!
-        units = shared?.getString("Units", "")!!
+        units = shared?.getString("Units", "standard")!!
         if (location.equals("Map")) {
             val action = HomeFragmentDirections.homeToMap("Home")
             Navigation.findNavController(requireView()).navigate(action)
         }
-       // if (NetWorkChecker.getConnectivity(requireContext())!!) {
+
             if (location == "MapDone") {
                 weatherViewModel.getLocationByMap(units, lang)
             } else if (location == "GPS") {
@@ -135,19 +142,10 @@ class HomeFragment : Fragment() {
                         putFloat("lat", it.first.toFloat())
                         putFloat("long", it.second.toFloat())
                         apply()
-
                     weatherViewModel.getLocationByGPS(it.first, it.second, units, lang)
                 }
-
             }
         }
-
-           /* }else{
-            var shared = context?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
-            var latitude = shared?.getFloat("lat",0.0f)?.toDouble()
-            var logitude = shared?.getFloat("long" , 0.0f)?.toDouble()
-            weatherViewModel.getCashedHome(latitude!!,logitude!!)
-            }*/
 
 
     lifecycleScope.launch {
@@ -155,19 +153,35 @@ class HomeFragment : Fragment() {
             when (result) {
                 is APIState.Sucess -> {
                     weatherResponse = result.weatherResponse
+                    activity?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)?.edit()?.apply {
+                        putString("cashedHome",  Gson().toJson(weatherResponse))
+                        apply()
+                    }
                     binding.homeNested.visibility = View.VISIBLE
                     binding.loading.visibility = View.GONE
+                    binding.parentContarint.visibility = View.VISIBLE
                     setHomeData()
+                    dialog.dismiss()
                 }
                 is APIState.Failure->{
-                    Toast.makeText(context,result.msg.toString(),Toast.LENGTH_SHORT)
-                    binding.homeNested.visibility = View.GONE
-
+                    binding.loading.visibility = View.GONE
+                    var cash = Gson().fromJson( shared.getString("cashedHome",""),WeatherResponse::class.java)
+                    if(shared.contains("cashedHome")){
+                        weatherResponse = cash
+                        setHomeData()
+                        binding.parentContarint.visibility = View.VISIBLE
+                        Snackbar.make(requireView(),R.string.last_data,Snackbar.ANIMATION_MODE_SLIDE).show()
+                    }else {
+                        dialog.show()
+                    }
                 }
                 else -> {
+                    dialog.dismiss()
                     binding.loading.visibility = View.VISIBLE
                     binding.loading.repeatCount = Int.MAX_VALUE
-                    binding.homeNested.visibility = View.GONE
+                    binding.parentContarint.visibility = View.GONE
+
+
                 }
             }
         }
@@ -177,8 +191,15 @@ class HomeFragment : Fragment() {
 
 
 
+    @SuppressLint("SetTextI18n")
     private fun setHomeData(){
-        binding.tvHomeCountry.text = weatherResponse.timezone
+        var countryName = Utility.getAdressName(weatherResponse.lat,weatherResponse.lon,requireContext())
+        if(countryName.equals("invalid")){
+            binding.tvHomeCountry.text = weatherResponse.timezone
+        }else{
+            binding.tvHomeCountry.text = countryName
+        }
+
         var milliSecondDate = weatherResponse.current?.dt
         Log.i("time", milliSecondDate.toString())
         var date = Date(milliSecondDate?.times(1000L) ?: 0)
@@ -187,18 +208,44 @@ class HomeFragment : Fragment() {
         var img = weatherResponse?.current?.weather?.get(0)?.let { Utility.getImage(it.icon) }
         binding.imgHomeWeather.setImageResource(img!!)
         binding.tvHomeDate.text = formatedDate
-        binding.tvHomeTemp.text = weatherResponse.current?.temp.toString()
+        binding.tvHomeTemp.text = weatherResponse.current?.temp.toString()+Utility.getUnits(requireContext())[1]
         Log.i("temp", weatherResponse.current?.temp.toString())
         binding.tvHomeDes.text = weatherResponse.current?.weather?.get(0)?.description
-        binding.tvHomeCloud.text = weatherResponse.current?.clouds.toString()
-        binding.tvHomeHumidity.text = weatherResponse.current?.humidity.toString()
-        binding.tvHomePress.text = weatherResponse.current?.pressure.toString()
-        binding.tvHomeWind.text = weatherResponse.current?.wind_speed.toString()
-        binding.tvHomeVisiblity.text = weatherResponse.current?.visibility.toString()
+        binding.tvHomeCloud.text = weatherResponse.current?.clouds.toString()+"% "
+        binding.tvHomeHumidity.text = weatherResponse.current?.humidity.toString()+"% "
+        binding.tvHomeWind.text = weatherResponse.current?.wind_speed.toString() + Utility.getUnits(requireContext())[0]
+        if (lang == "en") {
+            binding.tvHomePress.text = weatherResponse.current?.pressure.toString() + " hPa"
+            binding.tvHomeVisiblity.text = weatherResponse.current?.visibility.toString()+" meters"
+        }else{
+            binding.tvHomePress.text = weatherResponse.current?.pressure.toString() + "هيكتو "
+            binding.tvHomeVisiblity.text = weatherResponse.current?.visibility.toString() + "متر"
+        }
         binding.tvHomeUltra.text = weatherResponse.current?.uvi.toString()
 
     }
+
+    fun noInternetDialog() {
+        dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.no_internet)
+        val window: Window? = dialog.getWindow()
+        window?.setBackgroundDrawableResource(R.color.transparent);
+        window?.setLayout(
+            Constraints.LayoutParams.MATCH_PARENT,
+            Constraints.LayoutParams.WRAP_CONTENT
+        )
+        window?.setBackgroundDrawableResource(R.color.transparent);
+        dialog.setCanceledOnTouchOutside(false)
+        var cancel =   dialog.findViewById<Button>(R.id.no_net_cancel)
+        cancel.setOnClickListener {
+            dialog.dismiss()
+        }
+    }
+
 }
+
+
 
 
 

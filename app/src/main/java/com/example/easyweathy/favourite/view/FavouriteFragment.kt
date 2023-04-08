@@ -1,11 +1,15 @@
 package com.example.easyweathy.favourite.view
 
+import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.Button
+import androidx.constraintlayout.widget.Constraints
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -18,10 +22,11 @@ import com.example.easyweathy.favourite.OnCardFavClickListener
 import com.example.easyweathy.favourite.OnFavouriteDeleteListener
 import com.example.easyweathy.favourite.view_model.FavouriteViewModel
 import com.example.easyweathy.favourite.view_model.FavouriteViewModelFactory
-import com.example.easyweathy.home.view.HomeFragmentDirections
 import com.example.easyweathy.model.ConcreteRepo
 import com.example.easyweathy.model.WeatherResponse
 import com.example.easyweathy.network.ConcreteRemoteSource
+import com.example.easyweathy.network.NetWorkChecker
+import com.example.easyweathy.utilities.Utility
 
 
 class FavouriteFragment : Fragment(),OnFavouriteDeleteListener ,OnCardFavClickListener{
@@ -49,10 +54,13 @@ class FavouriteFragment : Fragment(),OnFavouriteDeleteListener ,OnCardFavClickLi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.fabAddToFavourite.setOnClickListener(){
-            Navigation.findNavController(view).navigate(R.id.navigate_from_fav_to_map)
 
+            if(NetWorkChecker.getConnectivity(requireContext())!!){
+                Navigation.findNavController(view).navigate(R.id.navigate_from_fav_to_map)
+            }else{
+              Utility.noInternetDialog(requireContext())
             }
-
+        }
     }
 
 
@@ -83,8 +91,8 @@ class FavouriteFragment : Fragment(),OnFavouriteDeleteListener ,OnCardFavClickLi
         Navigation.findNavController(requireView()).navigate(action)
 
     }
-   /* interface SendLocation{
-        fun getLocation(lat:Double,long:Double)
-    }*/
+
+
 
 }
+

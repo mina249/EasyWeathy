@@ -47,6 +47,7 @@
     <string name="enable">Enable</string>
     <string name="disable">Disable</string>
     <string name="rain">Rain</string>
+    <string name="check_network">Please check your internet connection and try agian</string>
     <string-array name="myAlerts">
         <item>Rain</item>
         <item>Storm</item>
@@ -54,4 +55,5 @@
         <item>Earthquake</item>
         <item>Tornado</item>
     </string-array>
+    <string name="last_data">This your last data for more recent data please check your network connection</string>
 </resources>

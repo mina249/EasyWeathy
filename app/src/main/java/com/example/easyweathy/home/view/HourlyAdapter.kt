@@ -16,7 +16,7 @@ import com.example.easyweathy.utilities.Utility
 import java.text.SimpleDateFormat
 import java.util.*
 
-class HourlyAdapter(var hourly:List<Current>):
+class HourlyAdapter(var hourly:List<Current>,var context: Context):
     RecyclerView.Adapter<ViewHolder>() {
     var bindingWeather:HourlyWeatherHomeBinding?=null
     var bindingWeather2:HourlyWeatherBinding?=null
@@ -34,7 +34,7 @@ class HourlyAdapter(var hourly:List<Current>):
         return hourly.size
     }
 
-    @SuppressLint("SimpleDateFormat")
+    @SuppressLint("SimpleDateFormat", "SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
        val milliSecond=hourly[position].dt
         val hour =Date(milliSecond*1000L)
@@ -47,11 +47,11 @@ class HourlyAdapter(var hourly:List<Current>):
         if(holder is HourlyHolder2){
             holder.binding2.imgHourly.setImageResource(img)
             holder.binding2.tvHoursHourly.text = formatedHour
-            holder.binding2.tvDegreeHourly.text =hourly[position].temp.toString()
+            holder.binding2.tvDegreeHourly.text =hourly[position].temp.toString()+Utility.getUnits(context)[1]
         }else if(holder is HourlyHolder){
             holder.binding.imgDailyHour.setImageResource(img)
             holder.binding.tvHoursDaily.text = formatedHour
-            holder.binding.tvHourlyDegree.text = hourly[position].temp.toString()
+            holder.binding.tvHourlyDegree.text = hourly[position].temp.toString()+Utility.getUnits(context)[1]
         }
     }
     override fun getItemViewType(position: Int): Int {

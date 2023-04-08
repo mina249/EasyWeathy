@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parentContarint"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:visibility="gone">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/loading"
@@ -54,6 +55,7 @@
                         android:id="@+id/tv_home_country"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="60dp"
                         android:text="Alexandria,Egypt"
                         android:textColor="@color/white"
                         android:textSize="25sp"
@@ -69,16 +71,19 @@
                         android:id="@+id/tv_home_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
                         android:text="21 March , Tuesday"
                         android:textColor="@color/white"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/tv_home_temp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.134"
+                        app:layout_constraintHorizontal_bias="0.078"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.183" />
+                        app:layout_constraintTop_toBottomOf="@+id/tv_home_country"
+                        app:layout_constraintVertical_bias="0.019" />
 
                     <ImageView
                         android:id="@+id/img_home_weather"
@@ -87,18 +92,19 @@
                         android:src="@drawable/sun"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.86"
+                        app:layout_constraintHorizontal_bias="0.916"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.153" />
+                        app:layout_constraintVertical_bias="0.068" />
 
                     <TextView
                         android:id="@+id/tv_home_temp"
-                        android:layout_width="107dp"
-                        android:layout_height="75dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
                         android:text="20 °C"
                         android:textColor="@color/white"
-                        android:textSize="50sp"
+                        android:textSize="40sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.124"
@@ -116,10 +122,10 @@
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.843"
+                        app:layout_constraintHorizontal_bias="0.888"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.301" />
+                        app:layout_constraintTop_toBottomOf="@+id/img_home_weather"
+                        app:layout_constraintVertical_bias="0.062" />
 
                     <TextView
                         android:id="@+id/textView"
@@ -153,7 +159,7 @@
                         android:id="@+id/tv_home_wind"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="55dp"
+                        android:layout_marginStart="25dp"
                         android:layout_marginEnd="32dp"
                         android:text="7km/h"
                         android:textColor="@color/white"
@@ -234,7 +240,7 @@
                         android:id="@+id/tv_home_humidity"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="95dp"
+                        android:layout_marginStart="80dp"
                         android:layout_marginEnd="16dp"
                         android:text="7km/h"
                         android:textColor="@color/white"
@@ -276,7 +282,7 @@
                         android:id="@+id/tv_home_cloud"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="55dp"
+                        android:layout_marginStart="45dp"
                         android:layout_marginEnd="32dp"
                         android:text="45 m"
                         android:textColor="@color/white"
@@ -348,6 +354,7 @@
                         android:id="@+id/imageView3"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
+                        android:layout_marginStart="16dp"
                         android:src="@drawable/ultra"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -360,8 +367,8 @@
                         android:id="@+id/tv_home_ultra"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="80dp"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="60dp"
+                        android:layout_marginEnd="32dp"
                         android:text="1000 %"
                         android:textColor="@color/white"
                         android:textSize="16sp"

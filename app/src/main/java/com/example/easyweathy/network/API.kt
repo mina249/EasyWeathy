@@ -11,7 +11,7 @@ interface API {
     @GET("onecall")
     suspend fun getWeatherResponse (@Query("lat") lat:Double
                                     , @Query("lon") lon: Double,
-                                    @Query("units") units:String ,
+                                    @Query("units") units:String = "standard" ,
                                     @Query("lang") language:String,
                                     @Query("appid") appid:String = "b084b436ae45d555b6a44ab2f656c11d" ):Response<WeatherResponse>
 

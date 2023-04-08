@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class DailyFavouriteAdapter(var weatherResponse: WeatherResponse):RecyclerView.Adapter<DailyFavouriteAdapter.DailyFavHolder>() {
+class DailyFavouriteAdapter(var weatherResponse: WeatherResponse,var context: Context):RecyclerView.Adapter<DailyFavouriteAdapter.DailyFavHolder>() {
     lateinit var binding: DailyDetailsBinding
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyFavHolder {
         val inflater: LayoutInflater = parent.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -43,7 +43,7 @@ class DailyFavouriteAdapter(var weatherResponse: WeatherResponse):RecyclerView.A
         binding.tvDayDesDet.text = weatherResponse.daily?.get(position)?.weather?.get(0)?.description
         var minTemp = weatherResponse?.daily?.get(position)?.temp?.max
         var maxTemp = weatherResponse.daily?.get(position)?.temp?.min
-        binding.tvDayDegreeDet.text= minTemp.toString() + " / " + maxTemp
+        binding.tvDayDegreeDet.text= minTemp.toString() + " / " + maxTemp + Utility.getUnits(context)[1]
     }
 
     inner class DailyFavHolder(var binding: DailyDetailsBinding): RecyclerView.ViewHolder(binding.root)

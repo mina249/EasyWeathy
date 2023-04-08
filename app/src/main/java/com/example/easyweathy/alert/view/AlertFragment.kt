@@ -20,6 +20,7 @@ import android.widget.Button
 import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.Constraints
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -34,11 +35,15 @@ import com.example.easyweathy.alert.viewmodel.AlertViewModelFactory
 import com.example.easyweathy.database.ConcreteLocalSource
 import com.example.easyweathy.databinding.FragmentAlarmBinding
 import com.example.easyweathy.model.ConcreteRepo
+import com.example.easyweathy.model.Current
 import com.example.easyweathy.network.ConcreteRemoteSource
+import com.example.easyweathy.network.NetWorkChecker
+import com.example.easyweathy.utilities.Utility
 import com.google.android.gms.maps.model.LatLng
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.util.*
 
 
@@ -124,6 +129,7 @@ class AlertFragment : Fragment(),OnAlertDeleteListener{
         }
 
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("NotifyDataSetChanged")
     private fun showAlertDialoge(){
         val dialog = Dialog(requireContext())
@@ -181,7 +187,7 @@ class AlertFragment : Fragment(),OnAlertDeleteListener{
                     .show()
 
 
-            } else if(startMilli < Date().time){
+            } else if(startCalender.timeInMillis < Calendar.getInstance().timeInMillis){
                 Toast.makeText(
                     context,
                     "Start Date is already passed, please choose valid Date",
@@ -199,7 +205,11 @@ class AlertFragment : Fragment(),OnAlertDeleteListener{
                 alertadapter?.notifyDataSetChanged()
                 dialog.dismiss()
             }
+
         }
+         dialog.findViewById<Button>(R.id.btn_alertdialoge_cancel).setOnClickListener{
+             dialog.dismiss()
+         }
     }
     @SuppressLint("SimpleDateFormat")
     private fun setDateText(c:Calendar, date:TextView){
@@ -261,6 +271,7 @@ class AlertFragment : Fragment(),OnAlertDeleteListener{
         return truncatedHash.fold(0) { acc, byte -> (acc shl 8) + (byte.toInt() and 0xff) }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
         super.onResume()
         alertFactory = AlertViewModelFactory(
@@ -272,7 +283,7 @@ class AlertFragment : Fragment(),OnAlertDeleteListener{
             )
         alertViewModel = ViewModelProvider(requireActivity(), alertFactory)[AlertViewModel::class.java]
         binding.fabAlert.setOnClickListener {
-            showAlertDialoge()
+                showAlertDialoge()
         }
 
         alertViewModel.getAlerts()

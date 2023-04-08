@@ -13,7 +13,7 @@ import java.sql.Date
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DailyAdapter(var weatherResponse: WeatherResponse) : RecyclerView.Adapter<DailyAdapter.DailyHolder>() {
+class DailyAdapter(var weatherResponse: WeatherResponse,var context: Context) : RecyclerView.Adapter<DailyAdapter.DailyHolder>() {
     lateinit var binding: DailyWeatherBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyHolder {
@@ -44,7 +44,7 @@ class DailyAdapter(var weatherResponse: WeatherResponse) : RecyclerView.Adapter<
         var minTemp = weatherResponse?.daily?.get(position)?.temp?.max
         var maxTemp = weatherResponse.daily?.get(position)?.temp?.min
         binding.imDaily.setImageResource(Utility.getImage(weatherResponse?.daily?.get(position)?.weather?.get(0)?.icon!!))
-        binding.tvDayDegree.text= minTemp.toString() + " / " + maxTemp
+        binding.tvDayDegree.text= minTemp.toString() + " / " + maxTemp +Utility.getUnits(context)[1]
     }
     inner class DailyHolder(var binding: DailyWeatherBinding): RecyclerView.ViewHolder(binding.root)
 }

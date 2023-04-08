@@ -29,6 +29,7 @@ import com.example.easyweathy.database.ConcreteLocalSource
 import com.example.easyweathy.model.ConcreteRepo
 import com.example.easyweathy.model.WeatherResponse
 import com.example.easyweathy.network.ConcreteRemoteSource
+import com.example.easyweathy.network.NetWorkChecker
 import kotlinx.coroutines.*
 
 
@@ -42,60 +43,91 @@ private var flag = 0
     @SuppressLint("SuspiciousIndentation")
     override fun onReceive(context: Context, intent: Intent?) {
         val prefrenceList = getPrefrenceData(context)
-        val lat = intent?.getDoubleExtra("lat",0.0)
-        val long = intent?.getDoubleExtra("long",0.0)
-        val id = intent?.getIntExtra("id",0)
+        val lat = intent?.getDoubleExtra("lat", 0.0)
+        val long = intent?.getDoubleExtra("long", 0.0)
+        val id = intent?.getIntExtra("id", 0)
         val type = intent?.getStringExtra("type")
 
-        val repo = ConcreteRepo.getInstance(ConcreteRemoteSource, ConcreteLocalSource.getInstance(context))
-        CoroutineScope(Dispatchers.IO).launch{
-         repo.getWeatherForHomeScreen(lat!!, long!!, prefrenceList[0], prefrenceList[1]).collect {
-            weatherResponse = it
-             if (prefrenceList[2]=="yes"){
-                 if (type == "Alert"){
-                     CoroutineScope(Dispatchers.Main).launch {
-                         flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+        val repo =
+            ConcreteRepo.getInstance(ConcreteRemoteSource, ConcreteLocalSource.getInstance(context))
+        if (prefrenceList[2] == "yes") {
+            if (NetWorkChecker.getConnectivity(context)!!) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    repo.getWeatherForHomeScreen(lat!!, long!!, prefrenceList[0], prefrenceList[1])
+                        .collect {
+                            weatherResponse = it
+                            if (type == "Alert") {
+                                CoroutineScope(Dispatchers.Main).launch {
+                                    flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                        WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
 
-                         } else{
-                             WindowManager.LayoutParams.TYPE_PHONE
-                         }
-                         setAlarmOverApps(context, weatherResponse!!)
-                     }
-                 }else{
+                                    } else {
+                                        WindowManager.LayoutParams.TYPE_PHONE
+                                    }
+                                    setAlarmOverApps(context, weatherResponse!!)
+                                }
+                            } else {
 
-                     val i = Intent(context, AlertFragment::class.java)
-                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                     val pendingIntent = PendingIntent.getActivity(context, 0, i, 0)
-                     val builder = NotificationCompat.Builder(context, id.toString())
-                         .setSmallIcon(R.drawable.app_logo)
-                         .setContentTitle(weatherResponse?.timezone)
-                         .setAutoCancel(true)
-                         .setDefaults(NotificationCompat.DEFAULT_ALL)
-                         .setPriority(NotificationCompat.PRIORITY_MAX)
-                         .setContentIntent(pendingIntent)
-                     if (!weatherResponse?.alerts?.isNullOrEmpty()!!){
-                         builder.setContentText(weatherResponse?.alerts!![0].description)
-                     }else{
-                         builder.setContentText("The weather To day is very good ,Have a nice day")
-                     }
-                     val notificationManger = NotificationManagerCompat.from(context)
+                                val i = Intent(context, AlertFragment::class.java)
+                                intent.flags =
+                                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                val pendingIntent = PendingIntent.getActivity(context, 0, i, 0)
+                                val builder = NotificationCompat.Builder(context, id.toString())
+                                    .setSmallIcon(R.drawable.app_logo)
+                                    .setContentTitle(weatherResponse?.timezone)
+                                    .setAutoCancel(true)
+                                    .setDefaults(NotificationCompat.DEFAULT_ALL)
+                                    .setPriority(NotificationCompat.PRIORITY_MAX)
+                                    .setContentIntent(pendingIntent)
+                                if (!weatherResponse?.alerts?.isNullOrEmpty()!!) {
+                                    builder.setContentText(weatherResponse?.alerts!![0].description)
+                                } else {
+                                    builder.setContentText("The weather To day is very good ,Have a nice day")
+                                }
+                                val notificationManger = NotificationManagerCompat.from(context)
 
-                     if (ActivityCompat.checkSelfPermission(
-                             context,
-                             Manifest.permission.POST_NOTIFICATIONS
-                         ) != PackageManager.PERMISSION_GRANTED
-                     ) {
+                                if (ActivityCompat.checkSelfPermission(
+                                        context,
+                                        Manifest.permission.POST_NOTIFICATIONS
+                                    ) != PackageManager.PERMISSION_GRANTED
+                                ) {
 
 
-                     }
-                     notificationManger.notify(123, builder.build())
-                 }
-             }
+                                }
+                                notificationManger.notify(123, builder.build())
+                            }
+                        }
+
+                }
+            }else {
+                val i = Intent(context, AlertFragment::class.java)
+                intent?.flags =
+                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                val pendingIntent = PendingIntent.getActivity(context, 0, i, 0)
+                val builder = NotificationCompat.Builder(context, id.toString())
+                    .setSmallIcon(R.drawable.app_logo)
+                    .setContentTitle("No internet")
+                    .setAutoCancel(true)
+                    .setDefaults(NotificationCompat.DEFAULT_ALL)
+                    .setPriority(NotificationCompat.PRIORITY_MAX)
+                    .setContentIntent(pendingIntent)
+                builder.setContentText("cannot show alert data please connect to internet")
+                val notificationManger = NotificationManagerCompat.from(context)
+
+                if (ActivityCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.POST_NOTIFICATIONS
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+
+
+                }
+                notificationManger.notify(123, builder.build())
+
+
+            }
+
         }
-        }
-
-
     }
     @SuppressLint("SetTextI18n", "InflateParams")
     private suspend fun setAlarmOverApps(context: Context, weatherResponse: WeatherResponse) {
@@ -110,7 +142,7 @@ private var flag = 0
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT
             )
-        layoutParams.gravity = Gravity.TOP
+        layoutParams.gravity = Gravity.CENTER
 
         val windowManager = context.getSystemService(WINDOW_SERVICE) as WindowManager
 
@@ -120,7 +152,7 @@ private var flag = 0
             if (weatherResponse.alerts.isNullOrEmpty()){
                 alertDescription.text = "The weather To day is very good ,Have a nice day"
             }else {
-                alertDescription.text = weatherResponse.alerts?.get(0)?.description.toString()
+                alertDescription.text = weatherResponse.alerts?.get(0)?.description
             }
         }
         val mediaPlayer = MediaPlayer.create(context, Settings.System.DEFAULT_ALARM_ALERT_URI)

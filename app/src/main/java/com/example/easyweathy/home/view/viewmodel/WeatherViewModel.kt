@@ -29,7 +29,7 @@ class WeatherViewModel(val repo: GeneralRepo, val context:Context):ViewModel() {
         viewModelScope.launch(Dispatchers.IO){
             repo.getWeatherForHomeScreen(lat,long,units,lang)
                 .catch {
-                    APIState.Failure(it)
+                   weatherResponse.value = APIState.Failure(it)
                  }.collect{
                     it.status = "home"
                     repo.addWeatherToFavourite(it)
@@ -48,16 +48,7 @@ class WeatherViewModel(val repo: GeneralRepo, val context:Context):ViewModel() {
             getWeatherResponse(latitude!!,logitude!!,units,lang)
         }
 
-    fun getCashedHome(lat: Double,long: Double){
-        viewModelScope.launch {
-            repo.getCashedHomeWeather(lat,long).catch {
-                APIState.Failure(it)
-            }.collect{
-               weatherResponse.value = APIState.Sucess(it)
-            }
-            }
 
-            }
 }
 
 

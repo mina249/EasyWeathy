@@ -56,4 +56,6 @@
         <item>Tornado</item>
     </string-array>
     <string name="last_data">This your last data for more recent data please check your network connection</string>
+    <string name="add_to_fav">Add to favourite</string>
+    <string name="add_to_alert">Add to alert</string>
 </resources>

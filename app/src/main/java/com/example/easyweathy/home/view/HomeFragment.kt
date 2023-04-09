@@ -105,10 +105,6 @@ class HomeFragment : Fragment() {
                 tab.selectTab(tab.getTabAt(position))
             }
         })
-
-
-
-
     }
     @SuppressLint("SimpleDateFormat", "SuspiciousIndentation", "CommitPrefEdits")
     override fun onResume() {
@@ -131,7 +127,6 @@ class HomeFragment : Fragment() {
             val action = HomeFragmentDirections.homeToMap("Home")
             Navigation.findNavController(requireView()).navigate(action)
         }
-
             if (location == "MapDone") {
                 weatherViewModel.getLocationByMap(units, lang)
             } else if (location == "GPS") {
@@ -157,9 +152,9 @@ class HomeFragment : Fragment() {
                         putString("cashedHome",  Gson().toJson(weatherResponse))
                         apply()
                     }
-                    binding.homeNested.visibility = View.VISIBLE
+                    binding.child.visibility = View.VISIBLE
                     binding.loading.visibility = View.GONE
-                    binding.parentContarint.visibility = View.VISIBLE
+                    binding.child.visibility = View.VISIBLE
                     setHomeData()
                     dialog.dismiss()
                 }
@@ -169,7 +164,7 @@ class HomeFragment : Fragment() {
                     if(shared.contains("cashedHome")){
                         weatherResponse = cash
                         setHomeData()
-                        binding.parentContarint.visibility = View.VISIBLE
+                        binding.child.visibility = View.VISIBLE
                         Snackbar.make(requireView(),R.string.last_data,Snackbar.ANIMATION_MODE_SLIDE).show()
                     }else {
                         dialog.show()
@@ -179,7 +174,7 @@ class HomeFragment : Fragment() {
                     dialog.dismiss()
                     binding.loading.visibility = View.VISIBLE
                     binding.loading.repeatCount = Int.MAX_VALUE
-                    binding.parentContarint.visibility = View.GONE
+                    binding.child.visibility = View.GONE
 
 
                 }

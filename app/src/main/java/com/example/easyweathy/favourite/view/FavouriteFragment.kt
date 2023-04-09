@@ -1,5 +1,6 @@
 package com.example.easyweathy.favourite.view
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
@@ -64,6 +65,7 @@ class FavouriteFragment : Fragment(),OnFavouriteDeleteListener ,OnCardFavClickLi
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
         favFactory = FavouriteViewModelFactory(
@@ -71,12 +73,19 @@ class FavouriteFragment : Fragment(),OnFavouriteDeleteListener ,OnCardFavClickLi
         favViewModel = ViewModelProvider(requireActivity(), favFactory).get(FavouriteViewModel::class.java)
         favViewModel.getAllFavWeather()
         favViewModel._favouriteWeatherList.observe(viewLifecycleOwner){
-            Log.i("fav",it.toString())
-            favAdapter = FavouriteAdapter(it,this,requireContext(),this)
-            favManger = LinearLayoutManager(requireContext())
-            binding.rvFavourite.apply {
-                adapter = favAdapter
-                layoutManager = favManger
+            if (!it.isNullOrEmpty()) {
+                binding.imgAddFav.visibility = View.GONE
+                binding.tvAddFav.visibility = View.GONE
+                favAdapter = FavouriteAdapter(it, this, requireContext(), this)
+                favManger = LinearLayoutManager(requireContext())
+                binding.rvFavourite.apply {
+                    adapter = favAdapter
+                    layoutManager = favManger
+                    adapter?.notifyDataSetChanged()
+                }
+            }else{
+                binding.imgAddFav.visibility = View.VISIBLE
+                binding.tvAddFav.visibility = View.VISIBLE
             }
         }
     }

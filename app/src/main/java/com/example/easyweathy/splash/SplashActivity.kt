@@ -29,7 +29,10 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        var shared =this.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
+        shared.edit().apply {
+            putBoolean("first",true)
+        }
         binding.splashCard.animate().translationX(1400f).setDuration(1000).startDelay = 3000
         Handler().postDelayed({
 
@@ -37,7 +40,7 @@ class SplashActivity : AppCompatActivity() {
 
         }, 4000)
 
-        var shared =this.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
+
         var lang = shared?.getString("Language","en")!!
             setLocale(lang)
 

@@ -91,13 +91,12 @@ class FavouriteAdapter(var favList:List<WeatherResponse>,var listener:OnFavourit
 
             dialog.findViewById<Button>(R.id.btn_delete_fav).setOnClickListener {
                 dialog.dismiss()
-               holder.binding.deleteLottie.playAnimation()
-                android.os.Handler().postDelayed({
+
                     holder.binding.favCard.animate().translationX(-1400f).setDuration(500)
-                },2500)
+
                 android.os.Handler().postDelayed({
                     listener.deleteWeatherFromFavourite(favList[position])
-                }, 3000)
+                }, 500)
 
 
             }

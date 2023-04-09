@@ -5,9 +5,9 @@
     android:id="@+id/alert_card"
     android:layout_width="match_parent"
     android:layout_height="300dp"
-    android:layout_margin="20dp"
+    android:layout_margin="10dp"
     app:cardBackgroundColor="@color/background"
-    app:cardCornerRadius="50dp">
+    app:cardCornerRadius="92dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

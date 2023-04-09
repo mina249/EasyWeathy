@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 
 class FavouriteViewModel(val repo:GeneralRepo):ViewModel() {
 
+
   private val favouriteWeatherList : MutableLiveData<List<WeatherResponse>> = MutableLiveData()
     val _favouriteWeatherList : LiveData<List<WeatherResponse>> = favouriteWeatherList
 

@@ -59,22 +59,6 @@ data class Weather (
     val icon: String
 )
 
-
-enum class Main(val value: String) {
-    Clear("Clear"),
-    Clouds("Clouds"),
-    Rain("Rain");
-
-    companion object {
-        public fun fromValue(value: String): Main = when (value) {
-            "Clear"  -> Clear
-            "Clouds" -> Clouds
-            "Rain"   -> Rain
-            else     -> throw IllegalArgumentException()
-        }
-    }
-}
-
 data class Daily (
     val dt: Long,
     val sunrise: Long,

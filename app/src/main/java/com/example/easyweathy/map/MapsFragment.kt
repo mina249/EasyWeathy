@@ -35,9 +35,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.io.IOException
 
 class MapsFragment : Fragment(){
@@ -45,10 +43,10 @@ class MapsFragment : Fragment(){
         lateinit var binding:FragmentMapsBinding
         lateinit var favViewModel: FavouriteViewModel
         lateinit var favFactory:FavouriteViewModelFactory
-          var latitude:Double = 0.0
+        var latitude:Double = 0.0
         var longtiude:Double = 0.0
-    lateinit var units:String
-    lateinit var lang:String
+         lateinit var units:String
+         lateinit var lang:String
 
         val args :MapsFragmentArgs by navArgs()
     lateinit var weatherResponse:WeatherResponse
@@ -109,10 +107,13 @@ class MapsFragment : Fragment(){
                     ConcreteRepo.getInstance(ConcreteRemoteSource,ConcreteLocalSource.getInstance(requireContext())))
 
                 favViewModel = ViewModelProvider(requireActivity(), favFactory).get(FavouriteViewModel::class.java)
+                CoroutineScope(Dispatchers.Main).launch {
+                    favViewModel.insertFavouriteWeather(latitude, longtiude, units, lang)
+                    delay(500)
+                    Navigation.findNavController(view).navigate(R.id.map_to_favourite)
+                }
 
-                favViewModel.insertFavouriteWeather(latitude,longtiude,units,lang)
 
-                Navigation.findNavController(view).navigate(R.id.map_to_favourite)
             }
         }
     }

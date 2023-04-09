@@ -56,7 +56,11 @@ class Utility {
                     return "invalid";
                 }else{
                     var loc : String =""
-                    loc = address[0].adminArea + ",\n"+ address[0].countryName
+                    loc = if(address[0].adminArea!=null) {
+                        address[0].adminArea + ",\n" + address[0].countryName
+                    }else{
+                        address[0].countryName
+                    }
                     return loc
                 }
 

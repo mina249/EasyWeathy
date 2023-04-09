@@ -288,11 +288,18 @@ class AlertFragment : Fragment(),OnAlertDeleteListener{
 
         alertViewModel.getAlerts()
         alertViewModel._alertList.observe(viewLifecycleOwner){
-            alertadapter = AlertAdapter(it,this,requireContext())
-
-            binding.rvAlert.apply {
-                adapter =alertadapter
-                layoutManager = alertManger
+            if(it.isEmpty()){
+                binding.lotiieAddToAlert.visibility=View.VISIBLE
+                binding.tvAddToAlert.visibility = View.VISIBLE
+                binding.lotiieAddToAlert.repeatCount = Int.MAX_VALUE
+            }else {
+                alertadapter = AlertAdapter(it, this, requireContext())
+                binding.rvAlert.apply {
+                    adapter = alertadapter
+                    layoutManager = alertManger
+                    binding.lotiieAddToAlert.visibility=View.GONE
+                    binding.tvAddToAlert.visibility = View.GONE
+                }
             }
         }
     }

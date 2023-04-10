@@ -3,6 +3,7 @@
 
 Android Weather forecast application using Kotlin language
 
+#SDK Version = 33
 
 ## Features
 

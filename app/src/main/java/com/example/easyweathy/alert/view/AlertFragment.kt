@@ -9,6 +9,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Constraints
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -122,6 +124,11 @@ class AlertFragment : Fragment(),OnAlertDeleteListener{
         intent.putExtra("type", alertType)
         val dayInMilli = 24*60*60*1000
         for (i in 0..numberOfDays) {
+            Log.i("days",numberOfDays.toString())
+            if(i == numberOfDays){
+                Log.i("inDays",numberOfDays.toString())
+                intent.putExtra("delete",id)
+            }
             intent.putExtra("id", id+i)
             pendingIntent = getBroadcast(requireContext(), id+i, intent, 0)
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, start+(i*dayInMilli), pendingIntent)
@@ -195,7 +202,7 @@ class AlertFragment : Fragment(),OnAlertDeleteListener{
                 )
                     .show()
             }else {
-                alert = AlertPojo(startDate.text.toString(),endDate.text.toString(), alertType,
+                alert = AlertPojo(startCalender.timeInMillis,endCalendar.timeInMillis, alertType,
                     location!!.latitude, location!!.longitude,
                     selectedAlert,id)
                 startMilli = startCalender.timeInMillis
@@ -213,7 +220,8 @@ class AlertFragment : Fragment(),OnAlertDeleteListener{
     }
     @SuppressLint("SimpleDateFormat")
     private fun setDateText(c:Calendar, date:TextView){
-        date.text = SimpleDateFormat("dd,MMM,yy \n hh:mm aa").format(c.time)
+        var shared =context?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
+        date.text = SimpleDateFormat("dd,MMM,yy \n hh:mm aa", Locale.forLanguageTag(shared?.getString("Language",""))).format(c.timeInMillis)
 
     }
     private fun setSelectedStartDate() {
@@ -302,6 +310,8 @@ class AlertFragment : Fragment(),OnAlertDeleteListener{
                 }
             }
         }
+        (activity as AppCompatActivity?)?.supportActionBar?.title =
+            requireActivity().getString(R.string.alert)
     }
 
     override fun onAlertDeleteListener(alert: AlertPojo) {

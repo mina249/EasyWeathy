@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Constraints
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -88,6 +89,8 @@ class FavouriteFragment : Fragment(),OnFavouriteDeleteListener ,OnCardFavClickLi
                 binding.tvAddFav.visibility = View.VISIBLE
             }
         }
+        (activity as AppCompatActivity?)?.supportActionBar?.title =
+            requireActivity().getString(R.string.favourite)
     }
 
     override fun deleteWeatherFromFavourite(weatherResponse: WeatherResponse) {

@@ -26,39 +26,45 @@
 
             <TextView
                 android:id="@+id/tv_country_fav"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="32dp"
                 android:text="Africa/Cairo"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.108"
+                app:layout_constraintEnd_toStartOf="@+id/img_fav"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.17" />
+                app:layout_constraintVertical_bias="0.186" />
 
             <TextView
                 android:id="@+id/tv_fav_day"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
                 android:text="22 April , 7:55 pm"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.107"
+                app:layout_constraintHorizontal_bias="0.065"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_country_fav"
-                app:layout_constraintVertical_bias="0.09" />
+                app:layout_constraintVertical_bias="0.164" />
 
             <TextView
                 android:id="@+id/tv_fav_degree"
-                android:layout_width="103dp"
-                android:layout_height="62dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
                 android:text="17 C"
                 android:textColor="@color/white"
                 android:textSize="30sp"
@@ -73,15 +79,15 @@
                 android:id="@+id/tv_fav_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
                 android:text="scattered clouds"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="italic"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_fav_degree"
+                app:layout_constraintBottom_toTopOf="@+id/delete_lottie"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.152"
-                app:layout_constraintStart_toEndOf="@+id/tv_fav_degree"
-                app:layout_constraintTop_toTopOf="@+id/tv_fav_degree" />
+                app:layout_constraintStart_toEndOf="@+id/tv_fav_day"
+                app:layout_constraintTop_toBottomOf="@+id/img_fav" />
 
             <ImageView
                 android:id="@+id/img_fav"
@@ -97,14 +103,14 @@
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/delete_lottie"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.872"
+                app:layout_constraintHorizontal_bias="0.897"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/img_fav"
-                app:layout_constraintVertical_bias="0.417"
+                app:layout_constraintVertical_bias="0.571"
                 app:lottie_autoPlay="false"
                 app:lottie_rawRes="@raw/delete_2" />
 

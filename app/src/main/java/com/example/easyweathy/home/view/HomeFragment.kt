@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Constraints
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -168,6 +169,7 @@ class HomeFragment : Fragment() {
                         Snackbar.make(requireView(),R.string.last_data,Snackbar.ANIMATION_MODE_SLIDE).show()
                     }else {
                         dialog.show()
+                        binding.child.visibility = View.GONE
                     }
                 }
                 else -> {
@@ -181,6 +183,8 @@ class HomeFragment : Fragment() {
             }
         }
     }
+        (activity as AppCompatActivity?)?.supportActionBar?.title =
+            requireActivity().getString(R.string.home)
 
     }
 
@@ -194,11 +198,12 @@ class HomeFragment : Fragment() {
         }else{
             binding.tvHomeCountry.text = countryName
         }
+        var shared = activity?.getSharedPreferences("appPrefrence", MODE_PRIVATE)
 
         var milliSecondDate = weatherResponse.current?.dt
         Log.i("time", milliSecondDate.toString())
         var date = Date(milliSecondDate?.times(1000L) ?: 0)
-        val timeZoneDate = SimpleDateFormat("dd  MMM , hh : mm a ")
+        val timeZoneDate = SimpleDateFormat("dd  MMM , hh : mm a ", Locale.forLanguageTag(shared?.getString("Language","")))
         var formatedDate = timeZoneDate.format(date)
         var img = weatherResponse?.current?.weather?.get(0)?.let { Utility.getImage(it.icon) }
         binding.imgHomeWeather.setImageResource(img!!)

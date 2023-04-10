@@ -43,7 +43,7 @@ class FavouriteViewModelTest{
     @Before
     fun initialSetup(){
         weatherList = mutableListOf<WeatherResponse>()
-        repo = FakeRepo(weatherList)
+        repo = FakeRepo()
         viewModel = FavouriteViewModel(repo)
         createTestWeatherResponse()
     }

@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
+import android.content.res.Resources
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -27,12 +29,6 @@ class SettingFragment : Fragment() {
 
     lateinit var binding: FragmentSettingBinding
     var shared: SharedPreferences? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,9 +54,10 @@ class SettingFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.lottieSetting.repeatCount = Int.MAX_VALUE
+    override fun onResume() {
+        super.onResume()
+        (activity as AppCompatActivity?)?.supportActionBar?.title =
+            requireActivity().getString(R.string.settings)
         onMapSelect()
         onGpsSelect()
         onMeterSelect()
@@ -73,6 +70,20 @@ class SettingFragment : Fragment() {
         getRadioButtonChecked()
         onDisAbleNotificationSelect()
         onEnableNotificationSelect()
+
+       if (!NetWorkChecker.getConnectivity(requireContext())!!){
+                isRadioButtonChecked(false)
+        }else{
+            isRadioButtonChecked(true)
+        }
+
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.lottieSetting.repeatCount = Int.MAX_VALUE
+
 
     }
 
@@ -182,46 +193,58 @@ class SettingFragment : Fragment() {
 
     fun onArabicSelect() {
         binding.rbArabic.setOnClickListener() {
-
-
             requireActivity().getSharedPreferences(
                 "appPrefrence",
                 AppCompatActivity.MODE_PRIVATE
             )?.edit()?.apply {
                 putString("Language", "ar")
                 apply()
-
+                setLocale("ar")
+                activity?.recreate()
             }
-            setLocale("ar")
+
+
 
         }
     }
 
     fun onEnglishSelect() {
         binding.rbEnglish.setOnClickListener() {
-
-
             requireActivity().getSharedPreferences(
                 "appPrefrence",
                 AppCompatActivity.MODE_PRIVATE
             )?.edit()?.apply {
                 putString("Language", "en")
                 apply()
+                setLocale("en")
+                activity?.recreate()
             }
-            setLocale("en")
 
         }
 
     }
 
-    fun setLocale(lang: String) {
+   /* fun setLocale(lang: String) {
         var locale = Locale(lang)
         Locale.setDefault(locale)
         var configuration = Configuration()
         configuration.setLocale(locale)
         context?.resources?.updateConfiguration(configuration, context?.resources?.displayMetrics)
-        activity?.recreate()
-    }
+
+    }*/
+   fun setLocale(lng: String,) {
+       val localeNew = Locale(lng)
+       Locale.setDefault(localeNew)
+       val res: Resources = requireContext().getResources()
+       val newConfig = Configuration(res.getConfiguration())
+       newConfig.locale = localeNew
+       newConfig.setLayoutDirection(localeNew)
+       res.updateConfiguration(newConfig, res.getDisplayMetrics())
+       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+           newConfig.setLocale(localeNew)
+        requireContext().createConfigurationContext(newConfig)
+       }
+   }
 
 
     fun getRadioButtonChecked() {
@@ -281,6 +304,36 @@ class SettingFragment : Fragment() {
 
     }
 
+    fun isRadioButtonChecked(flag:Boolean){
+        if(!flag){
+           binding.rbEnable.isEnabled = false
+           binding.rbDisable.isEnabled = false
+           binding.rbMeterSec.isEnabled = false
+           binding.rbMileHour.isEnabled = false
+           binding.rbFerhenhite.isEnabled = false
+           binding.rbCelesius.isEnabled = false
+            binding.rbKelvin.isEnabled = false
+            binding.rbEnglish.isEnabled = false
+            binding.rbArabic.isEnabled = false
+            binding.rbGps.isEnabled = false
+            binding.rbMap.isEnabled = false
+            Utility.noInternetDialog(requireContext())
+
+        }else{
+            binding.rbEnable.isEnabled = true
+            binding.rbDisable.isEnabled = true
+            binding.rbMeterSec.isEnabled = true
+            binding.rbMileHour.isEnabled = true
+            binding.rbFerhenhite.isEnabled = true
+            binding.rbCelesius.isEnabled = true
+            binding.rbKelvin.isEnabled = true
+            binding.rbEnglish.isEnabled = true
+            binding.rbArabic.isEnabled = true
+            binding.rbGps.isEnabled = true
+            binding.rbMap.isEnabled = true
+        }
+
+    }
 
 }
 

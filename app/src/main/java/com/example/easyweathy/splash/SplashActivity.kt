@@ -1,16 +1,16 @@
 package com.example.easyweathy.splash
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.content.res.Resources
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.Window
 import android.widget.Button
-import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Constraints
@@ -20,29 +20,36 @@ import com.example.easyweathy.databinding.ActivitySplashBinding
 import java.util.*
 
 
+@SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
-    lateinit var builder: AlertDialog.Builder
     lateinit var binding: ActivitySplashBinding
+
 
     @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        var shared =this.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
-        shared.edit().apply {
-            putBoolean("first",true)
-        }
+        val shared =this.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
+
         binding.splashCard.animate().translationX(1400f).setDuration(1000).startDelay = 3000
         Handler().postDelayed({
-
-            startDialogConfirmation()
+           var isFirtTime =  shared.getBoolean("first",true)
+            if(isFirtTime){
+                startDialogConfirmation()
+                shared.edit().apply {
+                    putBoolean("first",false)
+                    apply()
+                }
+            }else{
+                startActivity(Intent(this,MainActivity::class.java))
+            }
 
         }, 4000)
+        val lang = shared?.getString("Language", "en")!!
 
-
-        var lang = shared?.getString("Language","en")!!
             setLocale(lang)
+
 
         val actionBar = supportActionBar
         actionBar?.setTitle(getString(R.string.app_name))
@@ -88,7 +95,7 @@ class SplashActivity : AppCompatActivity() {
         }
 
     }
-    fun setLocale(lang:String){
+    /*fun setLocale(lang:String){
         var locale = Locale(lang)
         Locale.setDefault(locale)
         var configuration = Configuration()
@@ -102,6 +109,26 @@ class SplashActivity : AppCompatActivity() {
             apply()
         }
 
-    }
+    }*/
 
+    fun setLocale(lang: String,) {
+        val localeNew = Locale(lang)
+        Locale.setDefault(localeNew)
+        val res: Resources = this.getResources()
+        val newConfig = Configuration(res.getConfiguration())
+        newConfig.locale = localeNew
+        newConfig.setLayoutDirection(localeNew)
+        res.updateConfiguration(newConfig, res.getDisplayMetrics())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            newConfig.setLocale(localeNew)
+           this.createConfigurationContext(newConfig)
+            this.getSharedPreferences(
+                "appPrefrence",
+                AppCompatActivity.MODE_PRIVATE
+            )?.edit()?.apply {
+                putString("Language", lang)
+                apply()
+            }
+        }
+    }
 }

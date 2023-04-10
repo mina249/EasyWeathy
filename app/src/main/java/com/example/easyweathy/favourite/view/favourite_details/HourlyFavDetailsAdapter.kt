@@ -35,9 +35,10 @@ class HourlyFavDetailsAdapter(var hourly:List<Current>,var context: Context):
 
     @SuppressLint("SimpleDateFormat")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        var shared =context?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
         val milliSecond=hourly[position].dt
         val hour = Date(milliSecond*1000L)
-        val sdf= SimpleDateFormat("h a")
+        val sdf= SimpleDateFormat("h a",Locale.forLanguageTag(shared?.getString("Language","")))
         sdf.timeZone= TimeZone.getDefault()
         val formatedHour=sdf.format(hour)
         val image = Utility.getImage(hourly.get(position).weather?.get(0)?.icon!!)

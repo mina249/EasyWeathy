@@ -31,14 +31,15 @@ class HourlyAdapter(var hourly:List<Current>,var context: Context):
         }
     }
     override fun getItemCount(): Int {
-        return hourly.size
+        return 24
     }
 
     @SuppressLint("SimpleDateFormat", "SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        var shared =context?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
        val milliSecond=hourly[position].dt
         val hour =Date(milliSecond*1000L)
-        val sdf= SimpleDateFormat("h a")
+        val sdf= SimpleDateFormat("h a",Locale.forLanguageTag(shared?.getString("Language","")))
         sdf.timeZone=TimeZone.getDefault()
         val formatedHour=sdf.format(hour)
         val icon = hourly[position].weather?.get(0)?.icon!!

@@ -145,11 +145,12 @@ class DetailsFavourite : Fragment() {
     }
 
     private fun setHomeData(){
+        var shared =context?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
         binding.tvHomeCountryDetails.text = Utility.getAdressName(weatherResponse.lat,weatherResponse.lon,requireContext())
         var milliSecondDate = weatherResponse.current?.dt
         Log.i("time", milliSecondDate.toString())
         var date = Date(milliSecondDate?.times(1000L) ?: 0)
-        val timeZoneDate = SimpleDateFormat("dd  MMM , hh : mm a ")
+        val timeZoneDate = SimpleDateFormat("dd  MMM , hh : mm a ",Locale.forLanguageTag(shared?.getString("Language","")))
         var formatedDate = timeZoneDate.format(date)
         binding.tvHomeDateDetails.text = formatedDate
         binding.tvHomeTempDetails.text = weatherResponse.current?.temp.toString()+Utility.getUnits(requireContext())[1]

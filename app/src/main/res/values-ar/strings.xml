@@ -7,11 +7,11 @@
     <string name="map">الخريطة</string>
     <string name="location_sett">الموقع</string>
     <string name="english">الانجليزية</string>
-    <string name="arabic">العربية   </string>
+    <string name="arabic">العربية     </string>
     <string name="language_sett">اللغلة</string>
     <string name="m_s">م/ث</string>
     <string name="mile_h">ميل/ساعة</string>
-    <string name="wind_speed">سرعة الرياح</string>
+    <string name="wind_speed">    سرعة الرياح</string>
     <string name="celesius">سيليسيوس</string>
     <string name="fahrenheit">فهرنهايت</string>
     <string name="kelvin">كيلفن</string>
@@ -43,6 +43,14 @@
     <string name="save_dialog">حفظ</string>
     <string name="alert_delete">هل أنت متأكد،انك تريد حذف هذا التنبيه  من قائمة التنبيهات ؟</string>
     <string name="last_data">هذه بياناتك الأخيرة للحصول على أحدث البيانات ، يرجى التحقق من اتصال الشبكة</string>
+    <string name="dismiss">الغاء</string>
+    <string name="enable">تشغيل</string>
+    <string name="disable">ايقاف</string>
+    <string name="rain">مطر</string>
+    <string name="check_network">برجاء التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى</string>
+    <string name="add_to_fav">اضف الي المفضلة</string>
+    <string name="add_to_alert">اضف الي التنبيهات</string>
+
 
 
 </resources>

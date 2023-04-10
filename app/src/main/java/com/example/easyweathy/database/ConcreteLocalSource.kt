@@ -21,7 +21,7 @@ class ConcreteLocalSource private constructor(context: Context):LocalSource {
     }
 
     private val weatherDao: WeatherDao by lazy {
-       WeatherDataBase.getInstance(context).getProductDao()
+       WeatherDataBase.getInstance(context).getWeatherDao()
     }
 
     override suspend fun addWeatherToFavourite(weatherResponse: WeatherResponse) {

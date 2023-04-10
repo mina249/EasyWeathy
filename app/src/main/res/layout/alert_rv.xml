@@ -19,14 +19,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
             android:text="20,March,2022"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.501" />
+            app:layout_constraintTop_toBottomOf="@+id/alert_rv_country"
+            app:layout_constraintVertical_bias="0.139" />
 
         <TextView
             android:id="@+id/alert_rv_end_date"
@@ -46,30 +47,30 @@
             android:id="@+id/alert_rv_country"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="64dp"
+            android:layout_marginTop="18dp"
             android:textColor="@color/white"
             android:textSize="25sp"
             android:textStyle="bold|italic"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.164" />
+            app:layout_constraintVertical_bias="0.254" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/alert_delete"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="20dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.879"
+            app:layout_constraintHorizontal_bias="0.85"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/alert_rv_end_date"
             app:lottie_rawRes="@raw/delete_2" />
 
         <ImageView
             android:id="@+id/img_alert_rv"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginBottom="24dp"
             app:layout_constraintBottom_toTopOf="@+id/alert_rv_end_date"
             app:layout_constraintEnd_toEndOf="parent"

@@ -128,6 +128,13 @@ private var flag = 0
             }
 
         }
+        CoroutineScope(Dispatchers.IO).launch {
+         val deleteId =  intent?.getIntExtra("delete",-1)
+        if (deleteId!=-1){
+            repo.removeAlert(AlertPojo(20L,30L,"Alert",20.0,50.0,"rain",deleteId!!))
+        }
+
+        }
     }
     @SuppressLint("SetTextI18n", "InflateParams")
     private suspend fun setAlarmOverApps(context: Context, weatherResponse: WeatherResponse) {

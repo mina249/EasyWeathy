@@ -18,6 +18,8 @@ import com.example.easyweathy.R
 import com.example.easyweathy.databinding.AlertRvBinding
 import com.example.easyweathy.favourite.view.FavouriteAdapter
 import com.example.easyweathy.utilities.Utility
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class AlertAdapter(var alertList:List<AlertPojo>,var listener: OnAlertDeleteListener,var context: Context):RecyclerView.Adapter<AlertAdapter.AlertHolder>() {
@@ -38,13 +40,9 @@ class AlertAdapter(var alertList:List<AlertPojo>,var listener: OnAlertDeleteList
 
     override fun onBindViewHolder(holder: AlertHolder, position: Int) {
         var alert = alertList[position]
-        holder.binding.alertRvStartDate.text = alert.startDate
-        holder.binding.alertRvEndDate.text = alert.endDate
-        if(alert.AlertType == "Alert"){
-            holder.binding.imgAlertRv.setImageResource(R.drawable.snow)
-        }else{
-            holder.binding.imgAlertRv.setImageResource(R.drawable.sun)
-        }
+        var shared =context?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
+        holder.binding.alertRvStartDate.text = SimpleDateFormat("dd,MMM,yy \n hh:mm aa", Locale.forLanguageTag(shared?.getString("Language",""))).format(alert.startDate)
+        holder.binding.alertRvEndDate.text =SimpleDateFormat("dd,MMM,yy \n hh:mm aa", Locale.forLanguageTag(shared?.getString("Language",""))).format(alert.endDate)
         holder.binding.alertDelete.setOnClickListener(){
             dialogDeleteConfirmation(position,holder)
         }
@@ -78,14 +76,11 @@ class AlertAdapter(var alertList:List<AlertPojo>,var listener: OnAlertDeleteList
         dialog.findViewById<TextView>(R.id.tv_delete_confirm).setText(R.string.alert_delete)
         dialog.findViewById<Button>(R.id.btn_delete_fav).setOnClickListener {
             dialog.dismiss()
-            holder.binding.alertDelete.playAnimation()
+            holder.binding.alertCard.animate().translationX(-1400f).setDuration(500)
             Handler().postDelayed({
-                holder.binding.alertCard.animate().translationX(-1400f).setDuration(500)
-            },2500)
-
-            android.os.Handler().postDelayed({
                 listener.onAlertDeleteListener(alertList[position])
-            }, 3000)
+            },500)
+
 
 
         }

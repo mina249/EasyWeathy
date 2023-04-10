@@ -11,7 +11,7 @@ import com.example.easyweathy.model.WeatherResponse
 @Database(entities = arrayOf(WeatherResponse::class, AlertPojo::class), version = 25 )
 @TypeConverters(WeatherConverters::class)
 abstract class WeatherDataBase : RoomDatabase() {
-    abstract fun getProductDao(): WeatherDao
+    abstract fun getWeatherDao(): WeatherDao
 
     companion object {
         @Volatile

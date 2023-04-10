@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavViewModelStoreProvider
@@ -37,6 +38,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.*
 import java.io.IOException
+import java.util.*
 
 class MapsFragment : Fragment(){
         lateinit var map: GoogleMap
@@ -61,7 +63,7 @@ class MapsFragment : Fragment(){
 
        googleMap.setOnMapClickListener {
            googleMap.clear()
-           googleMap.addMarker(MarkerOptions().position(it).title("my location"))
+           googleMap.addMarker(MarkerOptions().position(it))
            latitude = it.latitude
            longtiude = it.longitude
 
@@ -139,7 +141,7 @@ class MapsFragment : Fragment(){
 
     private fun goToSearchLocation() {
        var serchLocation =    binding.etSearchMap.text.toString()
-        var geoCoder = Geocoder(requireContext())
+        var geoCoder = Geocoder(requireContext(), Locale.forLanguageTag(lang))
         var adresses = listOf<Address>()
         try {
             adresses = geoCoder.getFromLocationName(serchLocation,1) as List<Address>
@@ -166,5 +168,9 @@ class MapsFragment : Fragment(){
         return location
     }
 
-
+    override fun onResume() {
+        super.onResume()
+        (activity as AppCompatActivity?)?.supportActionBar?.title =
+            requireActivity().getString(R.string.map)
+    }
 }

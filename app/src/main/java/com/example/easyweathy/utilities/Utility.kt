@@ -12,7 +12,10 @@ import java.util.*
 
 class Utility {
 
+
     companion object{
+
+
 
         fun getImage(icon:String):Int{
             var requireImage:Int = 0
@@ -46,12 +49,16 @@ class Utility {
             return requireImage
         }
         fun getAdressName(lat:Double,long:Double,context: Context):String?{
-
+            var shared =context?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
 
             try {
-                var geocoder = Geocoder(context, Locale.getDefault())
+                var geocoder = shared?.getString("Language","")?.let { Locale.forLanguageTag(it) }?.let {
+                    Geocoder(context,
+                        it
+                    )
+                }
 
-                var  address = geocoder.getFromLocation(lat,long,1)
+                var  address = geocoder?.getFromLocation(lat,long,1)
                 if(address.isNullOrEmpty()){
                     return "invalid";
                 }else{

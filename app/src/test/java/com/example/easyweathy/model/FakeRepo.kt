@@ -5,7 +5,10 @@ import com.example.easyweathy.alert.view.AlertPojo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class FakeRepo(var weatherList: MutableList<WeatherResponse>):GeneralRepo {
+class FakeRepo():GeneralRepo {
+    var weatherList: MutableList<WeatherResponse> = mutableListOf()
+    var alert:MutableList<AlertPojo> = mutableListOf()
+
     override fun getWeatherForHomeScreen(
         lat: Double,
         lon: Double,
@@ -45,14 +48,17 @@ class FakeRepo(var weatherList: MutableList<WeatherResponse>):GeneralRepo {
     }
 
     override suspend fun addAlert(alertPojo: AlertPojo) {
-        TODO("Not yet implemented")
+        alert.add(alertPojo)
     }
 
     override suspend fun removeAlert(alertPojo: AlertPojo) {
-        TODO("Not yet implemented")
+        alert.remove(alertPojo)
     }
 
     override suspend fun getAllAlerts(): Flow<List<AlertPojo>> {
-        TODO("Not yet implemented")
+     var myAlerts = alert.toList()
+        return flow {
+            emit(myAlerts)
+        }
     }
 }

@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "Alert_Table")
 class AlertPojo(
-    var startDate:String,
-    var endDate:String,
+    var startDate:Long,
+    var endDate:Long,
     var AlertType:String="Alert",
     var lat:Double,
     var longitude:Double,

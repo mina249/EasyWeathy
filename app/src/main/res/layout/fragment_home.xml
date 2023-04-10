@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
+    android:backgroundTint="@color/white"
     android:visibility="visible">
 
     <com.airbnb.lottie.LottieAnimationView
@@ -35,7 +36,7 @@
             android:id="@+id/child"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/background"
+            android:background="#47B5FF"
             android:backgroundTint="@color/background"
             android:orientation="vertical">
 
@@ -46,6 +47,8 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="15dp"
+                android:background="@color/background"
+                android:backgroundTint="@color/background"
                 app:cardBackgroundColor="@color/background"
                 app:cardCornerRadius="30dp">
 
@@ -368,10 +371,9 @@
 
                     <TextView
                         android:id="@+id/tv_home_ultra"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="60dp"
-                        android:layout_marginEnd="32dp"
+                        android:layout_marginStart="24dp"
                         android:text="1000 %"
                         android:textColor="@color/white"
                         android:textSize="16sp"
@@ -404,7 +406,9 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/view_pager_home"
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:layout_height="200dp"
+                android:background="@color/background"
+                android:backgroundTint="@color/background" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

@@ -43,12 +43,12 @@ class FavouriteAdapter(var favList:List<WeatherResponse>,var listener:OnFavourit
     }
 
     override fun onBindViewHolder(holder: FavouriteHolder, position: Int) {
-
+        var shared =context?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
         weatherResponse = favList[position]
         var milliSecondDate = weatherResponse.current?.dt
         Log.i("time", milliSecondDate.toString())
         var date = Date(milliSecondDate?.times(1000L) ?: 0)
-        val timeZoneDate = SimpleDateFormat("dd  MMM , hh : mm a ")
+        val timeZoneDate = SimpleDateFormat("dd  MMM , hh : mm a ",Locale.forLanguageTag(shared?.getString("Language","")))
         var formatedDate = timeZoneDate.format(date)
         var img = weatherResponse.current?.weather?.get(0)?.icon
         holder.binding.imgFav.setImageResource(Utility.getImage(img!!))
@@ -59,7 +59,7 @@ class FavouriteAdapter(var favList:List<WeatherResponse>,var listener:OnFavourit
         }else{
           holder.binding.tvCountryFav.text = countryName
         }
-        holder.binding.tvFavDegree.text = weatherResponse.hourly?.get(position)?.temp.toString()
+        holder.binding.tvFavDegree.text = weatherResponse.hourly?.get(position)?.temp.toString()+Utility.getUnits(context)[1]
         holder.binding.tvFavStatus.text = weatherResponse.current?.weather?.get(0)?.description
         holder.binding.deleteLottie.setOnClickListener() {
             dialogDeleteConfirmation(position,holder)

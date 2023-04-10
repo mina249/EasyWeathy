@@ -27,17 +27,17 @@ class DailyAdapter(var weatherResponse: WeatherResponse,var context: Context) : 
     }
 
     override fun onBindViewHolder(holder: DailyHolder, position: Int) {
+        var shared =context?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)
         val milliSecondDate = weatherResponse.daily?.get(position)?.dt
         var date= Date(milliSecondDate?.times(1000L) ?: 0)
-        var sdf= SimpleDateFormat("d")
+        var sdf= SimpleDateFormat("d",Locale.forLanguageTag(shared?.getString("Language","")))
         sdf.timeZone= TimeZone.getDefault()
         var formatedData=sdf.format(date)
         var intDay=formatedData.toInt()
         var calendar=Calendar.getInstance()
         calendar.set(Calendar.DAY_OF_MONTH,intDay)
-        var format=SimpleDateFormat("EEEE")
+        var format=SimpleDateFormat("EEEE",Locale.forLanguageTag(shared?.getString("Language","")))
         var day=format.format(calendar.time)
-        Log.i("daily position",position.toString())
         binding.tvDay.text = day
         binding.imDaily.setImageResource(R.drawable.sun)
         binding.tvDayDes.text = weatherResponse.daily?.get(position)?.weather?.get(0)?.description

@@ -53,6 +53,7 @@ class AlertAdapter(var alertList:List<AlertPojo>,var listener: OnAlertDeleteList
         }
       holder. binding.alertRvCountry.text = Utility.getAdressName(alert.lat,alert.longitude,context)
         holder.binding.alertTypeTv.text = alert.alertDescription
+        holder.binding.alertDelete.repeatCount = Int.MAX_VALUE
 
 
     }

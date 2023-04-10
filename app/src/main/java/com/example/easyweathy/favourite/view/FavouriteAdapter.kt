@@ -69,6 +69,7 @@ class FavouriteAdapter(var favList:List<WeatherResponse>,var listener:OnFavourit
             holder.binding.favouriteCardView.setOnClickListener() {
                 cardlistener.showFavouriteDetails(lat, long)
             }
+        holder.binding.deleteLottie.repeatCount = Int.MAX_VALUE
 
     }
     inner class FavouriteHolder(var binding: FavouriteCardBinding) :

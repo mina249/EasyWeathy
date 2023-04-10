@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Context.WINDOW_SERVICE
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.PixelFormat
 import android.media.MediaPlayer
 import android.os.Build
@@ -30,6 +31,7 @@ import com.example.easyweathy.model.ConcreteRepo
 import com.example.easyweathy.model.WeatherResponse
 import com.example.easyweathy.network.ConcreteRemoteSource
 import com.example.easyweathy.network.NetWorkChecker
+import com.example.easyweathy.utilities.Utility
 import kotlinx.coroutines.*
 
 
@@ -105,7 +107,7 @@ private var flag = 0
                     Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 val pendingIntent = PendingIntent.getActivity(context, 0, i, 0)
                 val builder = NotificationCompat.Builder(context, id.toString())
-                    .setSmallIcon(R.drawable.app_logo)
+                    .setSmallIcon( Utility.getImage(weatherResponse?.current?.weather?.get(0)?.icon!!))
                     .setContentTitle("No internet")
                     .setAutoCancel(true)
                     .setDefaults(NotificationCompat.DEFAULT_ALL)

@@ -29,6 +29,7 @@ import com.example.easyweathy.home.view.viewmodel.WeatherViewModelFactory
 import com.example.easyweathy.model.ConcreteRepo
 import com.example.easyweathy.model.WeatherResponse
 import com.example.easyweathy.network.ConcreteRemoteSource
+import com.example.easyweathy.network.NetWorkChecker
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -36,6 +37,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
 import java.io.IOException
 import java.util.*
@@ -91,31 +93,44 @@ class MapsFragment : Fragment(){
         mapFragment?.getMapAsync(callback)
         binding.fabDone.setOnClickListener() {
 
-            if(args.home == "Home") {
-                activity?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)?.edit()?.apply {
-                    putString("location", "MapDone")
-                    apply()
+            if(NetWorkChecker.getConnectivity(requireContext())!!) {
+                if (args.home == "Home") {
+                    activity?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)?.edit()
+                        ?.apply {
+                            putString("location", "MapDone")
+                            apply()
 
-                }
-                activity?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)?.edit()?.apply {
-                    putFloat("lat", latitude.toFloat())
-                    putFloat("long", longtiude.toFloat())
-                    apply()
-                    Navigation.findNavController(view).navigate(R.id.map_to_home)
+                        }
+                    activity?.getSharedPreferences("appPrefrence", Context.MODE_PRIVATE)?.edit()
+                        ?.apply {
+                            putFloat("lat", latitude.toFloat())
+                            putFloat("long", longtiude.toFloat())
+                            apply()
+                            Navigation.findNavController(view).navigate(R.id.map_to_home)
+
+                        }
+                } else {
+                    favFactory = FavouriteViewModelFactory(
+                        ConcreteRepo.getInstance(
+                            ConcreteRemoteSource,
+                            ConcreteLocalSource.getInstance(requireContext())
+                        )
+                    )
+
+                    favViewModel = ViewModelProvider(
+                        requireActivity(),
+                        favFactory
+                    ).get(FavouriteViewModel::class.java)
+                    CoroutineScope(Dispatchers.Main).launch {
+                        favViewModel.insertFavouriteWeather(latitude, longtiude, units, lang)
+                        delay(600)
+                        Navigation.findNavController(view).navigate(R.id.map_to_favourite)
+                    }
+
 
                 }
             }else{
-                favFactory = FavouriteViewModelFactory(
-                    ConcreteRepo.getInstance(ConcreteRemoteSource,ConcreteLocalSource.getInstance(requireContext())))
-
-                favViewModel = ViewModelProvider(requireActivity(), favFactory).get(FavouriteViewModel::class.java)
-                CoroutineScope(Dispatchers.Main).launch {
-                    favViewModel.insertFavouriteWeather(latitude, longtiude, units, lang)
-                    delay(500)
-                    Navigation.findNavController(view).navigate(R.id.map_to_favourite)
-                }
-
-
+                Snackbar.make(requireView(),R.string.check_network,Snackbar.LENGTH_LONG).show()
             }
         }
     }

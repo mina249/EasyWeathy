@@ -5,6 +5,8 @@ import android.app.Dialog
 import android.content.Context
 
 import android.content.Context.MODE_PRIVATE
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -183,6 +185,7 @@ class HomeFragment : Fragment() {
             }
         }
     }
+
         (activity as AppCompatActivity?)?.supportActionBar?.title =
             requireActivity().getString(R.string.home)
 
